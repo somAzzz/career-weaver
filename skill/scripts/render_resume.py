@@ -26,7 +26,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_TEMPLATE = ROOT / "assets" / "templates" / "engineer" / "engineer.tex.jinja2"
 DEFAULT_OUTPUT = Path("output")
 DEFAULT_DATA = Path("debug") / "resume_data.json"
-LEGACY_DATA = Path("logs") / "resume_data.json"
 PDFLATEX_TIMEOUT_SECONDS = 120
 
 LATEX_SPECIALS = {
@@ -226,23 +225,6 @@ def resume_pdf_name(data: dict[str, Any], output_dir: Path) -> str:
     return f"{person}_{job}_resume.pdf"
 
 
-def copy_if_different(source: Path, destination: Path) -> None:
-    if source.resolve() == destination.resolve():
-        return
-    if source.exists():
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, destination)
-
-
-def copy_legacy_artifacts(base_path: Path, data_file: Path, deliverables_path: Path, debug_path: Path) -> None:
-    """Keep old output/logs layouts readable while moving useful files forward."""
-    copy_if_different(data_file, debug_path / "resume_data.json")
-
-    legacy_deliverables = base_path / "output"
-    for filename in ("match_report.md", "interview_prep.md"):
-        copy_if_different(legacy_deliverables / filename, deliverables_path / filename)
-
-
 def render(data_file: Path, template_file: Path, output_dir: Path) -> Path:
     base_path = output_dir
     deliverables_path = base_path / "deliverables"
@@ -252,7 +234,6 @@ def render(data_file: Path, template_file: Path, output_dir: Path) -> Path:
 
     data = load_resume_data(data_file)
     data.setdefault("labels", {})
-    copy_legacy_artifacts(base_path, data_file, deliverables_path, debug_path)
     template_file = template_file.resolve()
     env = build_jinja_env(template_file.parent)
     template = env.get_template(template_file.name)
@@ -298,13 +279,7 @@ def resolve_data_path(output_dir: Path, data_arg: str) -> Path:
     data_path = Path(data_arg)
     if data_path.is_absolute():
         return data_path
-
-    candidate = output_dir / data_path
-    if data_path == DEFAULT_DATA and not candidate.exists():
-        legacy_candidate = output_dir / LEGACY_DATA
-        if legacy_candidate.exists():
-            return legacy_candidate
-    return candidate
+    return output_dir / data_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -313,7 +288,7 @@ def parse_args() -> argparse.Namespace:
         "--data",
         "-d",
         default=str(DEFAULT_DATA),
-        help="Resume JSON file. Relative paths are resolved against --output. Defaults to debug/resume_data.json and falls back to logs/resume_data.json.",
+        help="Resume JSON file. Relative paths are resolved against --output. Defaults to debug/resume_data.json.",
     )
     parser.add_argument(
         "--template",

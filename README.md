@@ -104,8 +104,6 @@ output/{person}/jobs/{job}/
     developercv.cls
 ```
 
-For compatibility, the renderer still reads legacy `logs/resume_data.json` when `debug/resume_data.json` does not exist.
-
 ## Multilingual Behavior
 
 User interaction can stay in Chinese while the resume output is localized to the JD or requested language. For example, a Chinese user can provide a Chinese profile and a German JD, then ask for a German resume. Career Weaver keeps facts grounded in `profile.yaml`, translates resume-facing text, and localizes section labels through `labels` in `debug/resume_data.json`.
@@ -213,8 +211,6 @@ output/{person}/jobs/{job}/
     tailored_resume.out
     developercv.cls
 ```
-
-为了兼容旧结构，如果 `debug/resume_data.json` 不存在，渲染器仍会尝试读取 `logs/resume_data.json`。
 
 ## 多语言能力
 
