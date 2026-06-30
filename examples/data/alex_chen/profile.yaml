@@ -1,0 +1,247 @@
+# Master Profile Data
+# Fictional sample data for testing the Career Weaver skill.
+# Keep this file intentionally rich so agents can practice selecting, trimming,
+# and reframing evidence for different job descriptions without fabrication.
+
+profile:
+  name: "Alex Chen"
+  headline: "Senior Backend and Platform Engineer"
+  summary: |
+    Senior Software Engineer with 8+ years of experience building distributed
+    backend systems, event-driven platforms, and cloud infrastructure. Strong
+    track record in Python, Go, AWS, Kubernetes, observability, and developer
+    productivity. Experienced mentoring engineers, leading architecture reviews,
+    and improving reliability for high-volume production systems.
+  target_roles:
+    - "Senior Backend Engineer"
+    - "Staff Backend Engineer"
+    - "Platform Engineer"
+    - "Technical Lead"
+  work_authorization: "Authorized to work in the United States"
+  availability: "4 weeks notice"
+
+contact:
+  email: "alex.chen@example.com"
+  phone: "+1 (555) 123-4567"
+  location: "San Francisco, CA"
+  linkedin: "https://linkedin.com/in/alexchen"
+  github: "https://github.com/alexchen"
+  website: "https://alexchen.dev"
+
+preferences:
+  locations: ["San Francisco Bay Area", "Seattle", "Remote - US"]
+  work_style: ["Hybrid", "Remote"]
+  industries:
+    - "B2B SaaS"
+    - "Developer tools"
+    - "Cloud infrastructure"
+    - "Fintech infrastructure"
+  notes: |
+    Prefers hands-on technical leadership roles with meaningful architecture,
+    reliability, and mentorship responsibilities.
+
+experience:
+  - company: "TechCorp Inc."
+    role: "Senior Software Engineer, Infrastructure"
+    location: "San Francisco, CA"
+    period: "2021 - Present"
+    team_size: 9
+    reporting_line: "Reports to Director of Engineering"
+    description: "Leads backend platform work for data ingestion, deployment automation, and service reliability."
+    domains: ["platform engineering", "stream processing", "cloud infrastructure", "developer productivity"]
+    technologies:
+      - "Python"
+      - "Go"
+      - "Kafka"
+      - "Kubernetes"
+      - "AWS"
+      - "Terraform"
+      - "PostgreSQL"
+      - "Prometheus"
+      - "Grafana"
+      - "GitHub Actions"
+    achievements:
+      - "Designed and implemented a real-time data ingestion platform handling 1.4M events/day across 35 customer-facing services using Apache Kafka and Go"
+      - "Reduced cloud infrastructure costs by 40% by right-sizing Kubernetes workloads, tuning autoscaling policies, and consolidating duplicate data processors"
+      - "Built CI/CD pipelines that reduced median deployment time from 2 hours to 15 minutes while adding automated rollback checks"
+      - "Led migration of 18 services from EC2-based deployments to Kubernetes with zero customer-facing downtime"
+      - "Introduced service-level objectives, Prometheus alerting, and incident review templates that reduced repeat production incidents by 32%"
+      - "Mentored 4 engineers through design reviews, pairing sessions, and promotion packet feedback"
+      - "Partnered with security team to add dependency scanning, container image signing, and least-privilege IAM policies to the release process"
+    leadership_examples:
+      - "Facilitated weekly architecture review for infrastructure changes affecting 20+ engineers"
+      - "Coordinated incident response during a regional AWS degradation and wrote the postmortem action plan"
+      - "Created onboarding materials that shortened new engineer ramp-up from 6 weeks to 3 weeks"
+
+  - company: "DataFlow Systems"
+    role: "Software Engineer"
+    location: "Seattle, WA"
+    period: "2018 - 2021"
+    description: "Built data processing and ML inference services for analytics customers."
+    domains: ["data engineering", "machine learning infrastructure", "API development"]
+    technologies:
+      - "Python"
+      - "Java"
+      - "Kafka"
+      - "Spark"
+      - "Redis"
+      - "PostgreSQL"
+      - "Docker"
+      - "Jenkins"
+      - "AWS Lambda"
+    achievements:
+      - "Developed a streaming data pipeline processing 500K events/second with Kafka, Spark Structured Streaming, and schema validation"
+      - "Implemented an ML inference service that reduced p95 prediction latency by 70% through batching, Redis caching, and model warmup"
+      - "Built an automated testing framework that raised backend integration test coverage from 62% to 95%"
+      - "Designed REST APIs for analytics dashboards used by 120+ enterprise customers"
+      - "Improved PostgreSQL query performance by 55% by adding composite indexes and refactoring high-cardinality joins"
+      - "Rotated through on-call support and reduced noisy alerts by 45% through alert threshold tuning"
+
+  - company: "StartupXYZ"
+    role: "Full Stack Developer"
+    location: "Remote"
+    period: "2016 - 2018"
+    description: "Built the first version of a collaboration SaaS product from prototype to public launch."
+    domains: ["full-stack development", "product engineering", "early-stage startups"]
+    technologies:
+      - "TypeScript"
+      - "JavaScript"
+      - "React"
+      - "Node.js"
+      - "PostgreSQL"
+      - "Redis"
+      - "Heroku"
+      - "Stripe"
+    achievements:
+      - "Built MVP from scratch using React, Node.js, PostgreSQL, and Redis"
+      - "Scaled user base from 0 to 100K monthly active users within 18 months"
+      - "Implemented billing and subscription workflows with Stripe for self-serve customers"
+      - "Created admin dashboards that reduced customer support investigation time by 30%"
+      - "Collaborated directly with founders, designers, and early customers to prioritize roadmap tradeoffs"
+
+projects:
+  - name: "CloudMonitor"
+    role: "Creator and Maintainer"
+    period: "2022 - Present"
+    description: "Open-source infrastructure monitoring tool for Kubernetes services."
+    tech_stack: ["Go", "Prometheus", "Grafana", "Kubernetes", "Helm"]
+    links:
+      github: "https://github.com/alexchen/cloudmonitor"
+      docs: "https://cloudmonitor.example.com"
+    highlights:
+      - "2,500+ GitHub stars and 400+ forks"
+      - "Featured in the Kubernetes official blog"
+      - "Used by 100+ companies in production"
+      - "Added Helm chart, alert templates, and dashboards for common service reliability patterns"
+
+  - name: "FastCache"
+    role: "Lead Developer"
+    period: "2021 - Present"
+    description: "High-performance distributed caching library optimized for read-heavy workloads."
+    tech_stack: ["Go", "gRPC", "Redis", "Protocol Buffers", "Benchmarking"]
+    highlights:
+      - "Achieved 10x throughput vs Redis for selected immutable-key workloads in synthetic benchmarks"
+      - "Published as open source with 800+ GitHub stars"
+      - "Designed sharding, replication, and client-side failover APIs"
+
+  - name: "DeployLens"
+    role: "Solo Builder"
+    period: "2023"
+    description: "Internal deployment analytics prototype for finding slow release stages and flaky checks."
+    tech_stack: ["Python", "FastAPI", "PostgreSQL", "GitHub Actions", "Grafana"]
+    highlights:
+      - "Aggregated build metadata from 60+ repositories"
+      - "Identified three high-impact flaky integration tests responsible for 22% of failed deploy attempts"
+      - "Helped platform team prioritize CI pipeline improvements"
+
+  - name: "Incident Review Toolkit"
+    role: "Contributor"
+    period: "2022"
+    description: "Templates and lightweight scripts for incident timelines, action items, and SLO impact summaries."
+    tech_stack: ["Python", "Markdown", "Prometheus", "Grafana"]
+    highlights:
+      - "Standardized post-incident review format across infrastructure teams"
+      - "Reduced average postmortem completion time from 5 business days to 2 business days"
+
+skills:
+  - category: "Languages"
+    items: ["Python", "Go", "TypeScript", "JavaScript", "Java", "SQL", "Bash"]
+
+  - category: "Backend"
+    items: ["FastAPI", "Django", "Node.js", "REST APIs", "gRPC", "Microservices", "Event-driven architecture"]
+
+  - category: "Cloud & DevOps"
+    items: ["AWS", "Docker", "Kubernetes", "Terraform", "Helm", "GitHub Actions", "Jenkins", "Linux"]
+
+  - category: "Data & Messaging"
+    items: ["Kafka", "Spark", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Schema Registry"]
+
+  - category: "Reliability & Security"
+    items: ["SLOs", "Incident response", "Prometheus", "Grafana", "OpenTelemetry", "Dependency scanning", "IAM least privilege"]
+
+  - category: "Leadership"
+    items: ["Technical mentoring", "Architecture reviews", "Roadmap planning", "Stakeholder communication", "On-call process improvement"]
+
+education:
+  - school: "Stanford University"
+    location: "Stanford, CA"
+    degree: "M.S."
+    major: "Computer Science"
+    period: "2016 - 2018"
+    gpa: "3.8"
+    coursework:
+      - "Distributed Systems"
+      - "Database Systems"
+      - "Cloud Computing"
+      - "Machine Learning"
+
+  - school: "UC Berkeley"
+    location: "Berkeley, CA"
+    degree: "B.S."
+    major: "Computer Science"
+    period: "2012 - 2016"
+    coursework:
+      - "Algorithms"
+      - "Operating Systems"
+      - "Computer Security"
+
+certifications:
+  - name: "AWS Solutions Architect Professional"
+    issuer: "Amazon Web Services"
+    date: "2023"
+
+  - name: "Certified Kubernetes Administrator"
+    issuer: "Cloud Native Computing Foundation"
+    date: "2022"
+
+  - name: "HashiCorp Terraform Associate"
+    issuer: "HashiCorp"
+    date: "2024"
+
+publications_and_talks:
+  - title: "Practical SLOs for Small Platform Teams"
+    venue: "Bay Area Reliability Meetup"
+    date: "2024"
+    summary: "Talk on selecting service-level indicators and avoiding alert fatigue."
+
+  - title: "Lessons from Migrating 18 Services to Kubernetes"
+    venue: "TechCorp Engineering Blog"
+    date: "2023"
+    summary: "Internal-to-public engineering blog post describing migration planning, rollout safety, and cost lessons."
+
+languages:
+  - name: "English"
+    level: "Fluent"
+  - name: "Mandarin Chinese"
+    level: "Native"
+
+constraints:
+  do_not_claim:
+    - "People management ownership"
+    - "Direct budget ownership"
+    - "Production GCP or Azure experience"
+    - "Frontend design leadership"
+  weak_or_transferable_areas:
+    - "Security experience is practical platform security, not dedicated application security specialization"
+    - "Machine learning experience is infrastructure and inference oriented, not model research"
+    - "MongoDB appears in skills but has less direct project evidence than PostgreSQL or Redis"

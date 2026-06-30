@@ -1,0 +1,39 @@
+Technical Lead - Developer Platform
+
+Company: OrbitWorks
+Location: Seattle, WA; San Francisco, CA; or Remote - US
+
+Overview
+
+OrbitWorks is expanding its internal developer platform team. We need a Technical
+Lead who can remain hands-on while setting architecture direction for build,
+deploy, observability, and service reliability systems used by 150+ engineers.
+
+What you will do
+
+- Lead technical direction for CI/CD, service templates, infrastructure automation,
+  and observability standards
+- Drive architecture reviews for platform changes that affect many product teams
+- Partner with engineering managers and product leaders to prioritize platform roadmap work
+- Mentor senior and mid-level engineers through design reviews, pairing, and feedback
+- Improve operational excellence through SLOs, incident review practices, and alert hygiene
+- Reduce developer friction by identifying slow, flaky, or confusing parts of the release process
+- Communicate technical tradeoffs in planning meetings and written design documents
+
+Required qualifications
+
+- 7+ years of software engineering experience
+- 2+ years providing technical leadership across a team or major workstream
+- Strong backend engineering experience in Go, Python, Java, or similar languages
+- Production experience with Kubernetes, Docker, and cloud infrastructure
+- Experience with CI/CD systems such as GitHub Actions, Jenkins, Buildkite, or GitLab CI
+- Strong understanding of distributed systems, reliability, and incident response
+- Evidence of mentoring engineers and improving engineering practices
+
+Preferred qualifications
+
+- Experience scaling platform adoption across multiple product teams
+- Experience with Terraform, Helm, Prometheus, Grafana, or OpenTelemetry
+- Background in developer tools, infrastructure platforms, or B2B SaaS
+- Experience writing technical blog posts, internal RFCs, or architecture decision records
+- People management experience is not required

@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+.claude
+.claude/*
+.claude/**
+
+# Resume generation outputs
+output/
+/data/
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Local OS/editor noise
+.DS_Store
+Thumbs.db

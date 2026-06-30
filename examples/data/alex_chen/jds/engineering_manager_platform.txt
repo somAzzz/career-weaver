@@ -1,0 +1,34 @@
+Engineering Manager - Platform
+
+Company: HarborCloud
+Location: Remote - US
+
+HarborCloud is hiring an Engineering Manager for our platform organization. This
+person will manage a team of 8 engineers responsible for infrastructure,
+deployments, reliability, and internal developer tooling. The role includes
+people management, hiring, performance reviews, roadmap planning, and cross-team
+coordination.
+
+Responsibilities
+
+- Manage and grow a team of backend and platform engineers
+- Own performance management, career development, hiring, and compensation input
+- Set quarterly roadmap priorities with product and engineering leadership
+- Ensure platform reliability, delivery predictability, and healthy on-call practices
+- Coach engineers through technical decisions without becoming the bottleneck
+- Track team metrics and communicate status to senior leadership
+
+Required qualifications
+
+- 2+ years of formal engineering management experience
+- Experience hiring, performance management, and career coaching
+- Strong technical background in backend, infrastructure, or platform engineering
+- Experience managing roadmaps for developer productivity or reliability teams
+- Strong written and verbal communication skills
+
+Preferred qualifications
+
+- Experience managing managers or tech leads
+- Experience with Kubernetes, AWS, CI/CD, and observability
+- Experience scaling engineering teams through organizational change
+- Experience with budget planning or vendor management

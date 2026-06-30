@@ -1,0 +1,43 @@
+Senior Backend Engineer - Payments Platform
+
+Company: Northstar Commerce
+Location: San Francisco, CA or Remote - US
+Employment type: Full time
+
+About the role
+
+Northstar Commerce builds payment, subscription, and billing infrastructure for
+mid-market SaaS companies. We are looking for a Senior Backend Engineer to help
+design reliable APIs, event-driven workflows, and internal tools used by product
+teams and customer success. This role is hands-on and works closely with product,
+security, support, and infrastructure teams.
+
+Responsibilities
+
+- Design, build, and maintain backend services for payment orchestration, invoices,
+  subscription lifecycle events, and customer account workflows
+- Build REST and event-driven APIs that support web, mobile, and partner integrations
+- Improve reliability, observability, and incident response for customer-facing services
+- Profile and optimize high-throughput services backed by PostgreSQL, Redis, and Kafka
+- Write automated tests and support continuous delivery practices
+- Partner with security and compliance teams on secure coding, audit logs, access control,
+  and dependency management
+- Mentor mid-level engineers through code reviews, design feedback, and technical planning
+
+Required qualifications
+
+- 5+ years of backend software engineering experience
+- Strong production experience with Python, Go, Java, or similar languages
+- Experience designing REST APIs and distributed systems
+- Experience with AWS or comparable cloud infrastructure
+- Strong SQL and relational database experience, preferably PostgreSQL
+- Practical experience with Docker, CI/CD, observability, and on-call operations
+- Ability to communicate tradeoffs clearly to technical and non-technical stakeholders
+
+Preferred qualifications
+
+- Experience with Kafka or another event streaming platform
+- Experience with Kubernetes and infrastructure as code
+- Familiarity with payments, billing, fintech, compliance, or audit logging
+- Experience reducing cloud cost or improving deployment speed
+- Experience mentoring engineers without necessarily being a people manager

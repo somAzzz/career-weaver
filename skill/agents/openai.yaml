@@ -1,0 +1,6 @@
+interface:
+  display_name: "Career Weaver"
+  short_description: "Multilingual tailored resume workflow"
+  default_prompt: "Use $career-weaver to import my resume, save this JD, and generate a tailored resume PDF."
+policy:
+  allow_implicit_invocation: true

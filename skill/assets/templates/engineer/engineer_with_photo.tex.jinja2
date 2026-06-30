@@ -1,0 +1,221 @@
+\documentclass[8pt]{developercv}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{lipsum}
+\usepackage{tikz}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%    TITLE AND CONTACT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}[t]{0.12\textwidth}
+    \vspace{0pt}
+\BLOCK{if photo}
+    \begin{tikzpicture}[baseline=(current bounding box.south)]
+        \clip circle (11mm);
+        \node at (0,0) {\includegraphics[width=30mm,height=30mm]{\VAR{photo.filename}}};
+    \end{tikzpicture}
+\BLOCK{endif}
+\end{minipage}
+\hfill
+% 2. Name and Role
+\begin{minipage}[t]{0.60\textwidth}
+    \vspace{1.2\baselineskip}
+    \centering
+
+    {\fontsize{32}{36} \textcolor{black}{\textbf{\MakeUppercase{\VAR{name | latex_escape}}}}}
+
+    \vspace{6pt}
+
+    {\large \VAR{role | latex_escape}}
+\end{minipage}
+\hfill
+% 3. Contact (all in one column)
+\begin{minipage}[t]{0.25\textwidth}
+    \vspace{0pt}
+    \fontsize{8}{10}\selectfont
+
+    \icon{MapMarker}{8}{\VAR{contact.location | latex_escape}}\\
+\BLOCK{if contact.phone}
+    \icon{Phone}{8}{\VAR{contact.phone | latex_escape}}\\
+\BLOCK{endif}
+    \icon{Envelope}{8}{\VAR{contact.email | latex_escape}}\\
+\BLOCK{if contact.github}
+    \icon{Github}{8}{\href{\VAR{contact.github}}{\VAR{contact.github | display_url | latex_escape}}}\\
+\BLOCK{endif}
+\BLOCK{if contact.linkedin}
+    \icon{Linkedin}{8}{\href{\VAR{contact.linkedin}}{\VAR{contact.linkedin | display_url | latex_escape}}}\\
+\BLOCK{endif}
+
+\end{minipage}
+
+\vspace{0.4cm}
+
+%----------------------------------------------------------------------------------------
+%    SUMMARY
+%----------------------------------------------------------------------------------------
+
+\cvsect{\VAR{labels.summary | default('Summary') | latex_escape}}
+
+\begin{minipage}[t]{\textwidth}
+    \textit{\VAR{summary | latex_escape}}
+\end{minipage}
+
+\vspace{0.5cm}
+
+%----------------------------------------------------------------------------------------
+%    SKILLS
+%----------------------------------------------------------------------------------------
+
+\cvsect{\VAR{labels.skills | default('Skills') | latex_escape}}
+
+\begin{minipage}[t]{\textwidth}
+    \begin{itemize}[leftmargin=*]
+\BLOCK{for category, items in skills.items()}
+        \item \textbf{\VAR{category | latex_escape}:} \\
+\BLOCK{for item in items}
+        \VAR{item | latex_escape}\BLOCK{if not loop.last}, \BLOCK{endif}
+\BLOCK{endfor}
+
+        \vspace{4pt}
+\BLOCK{endfor}
+    \end{itemize}
+\end{minipage}
+
+\vspace{0.5cm}
+
+%----------------------------------------------------------------------------------------
+%    EXPERIENCE
+%----------------------------------------------------------------------------------------
+
+\BLOCK{if experience}
+\cvsect{\VAR{labels.experience | default('Experience') | latex_escape}}
+
+\begin{entrylist}
+\BLOCK{for exp in experience}
+    \entry
+        {\VAR{exp.date | latex_escape}}
+        {\VAR{exp.role | latex_escape}}
+        {\VAR{exp.company | latex_escape}}
+        {
+\BLOCK{if exp.description}
+        \VAR{exp.description | latex_escape}
+\BLOCK{endif}
+        \begin{itemize}[noitemsep,topsep=2pt,parsep=0pt,partopsep=0pt, leftmargin=12pt]
+\BLOCK{for bullet in exp.bullets}
+            \item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+        \end{itemize}
+\BLOCK{if exp.tags}
+        \texttt{\VAR{exp.tags | map('latex_escape') | join(' \slashsep ')}}
+\BLOCK{endif}
+        }
+\BLOCK{endfor}
+\end{entrylist}
+\BLOCK{endif}
+
+%----------------------------------------------------------------------------------------
+%    PROJECTS
+%----------------------------------------------------------------------------------------
+
+\BLOCK{if projects}
+\cvsect{\VAR{labels.projects | default('Projects') | latex_escape}}
+
+\begin{entrylist}
+\BLOCK{for project in projects}
+    \entry
+        {\VAR{project.date | latex_escape}}
+        {\VAR{project.title | latex_escape}}
+        {\VAR{project.company | latex_escape}}
+        {
+\BLOCK{if project.description}
+        \VAR{project.description | latex_escape}
+\BLOCK{endif}
+        \begin{itemize}[noitemsep,topsep=2pt,parsep=0pt,partopsep=0pt, leftmargin=12pt]
+\BLOCK{for bullet in project.bullets}
+            \item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+        \end{itemize}
+\BLOCK{if project.tags}
+        \texttt{\VAR{project.tags | map('latex_escape') | join(' \slashsep ')}}
+\BLOCK{endif}
+        }
+\BLOCK{endfor}
+\end{entrylist}
+\BLOCK{endif}
+
+%----------------------------------------------------------------------------------------
+%    RESEARCH PROJECTS
+%----------------------------------------------------------------------------------------
+
+\BLOCK{if research}
+\cvsect{\VAR{labels.research | default('Research Projects') | latex_escape}}
+
+\begin{entrylist}
+\BLOCK{for research_item in research}
+    \entry
+        {\VAR{research_item.date | latex_escape}}
+        {\VAR{research_item.title | latex_escape}}
+        {\VAR{research_item.company | latex_escape}}
+        {
+\BLOCK{if research_item.description}
+        \VAR{research_item.description | latex_escape}
+\BLOCK{endif}
+        \begin{itemize}[noitemsep,topsep=2pt,parsep=0pt,partopsep=0pt,leftmargin=12pt]
+\BLOCK{for bullet in research_item.bullets}
+            \item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+        \end{itemize}
+        }
+\BLOCK{endfor}
+\end{entrylist}
+\BLOCK{endif}
+
+%----------------------------------------------------------------------------------------
+%    EDUCATION
+%----------------------------------------------------------------------------------------
+
+\BLOCK{if education}
+\cvsect{\VAR{labels.education | default('Education') | latex_escape}}
+
+\begin{entrylist}
+\BLOCK{for edu in education}
+    \entry
+        {\VAR{edu.date | latex_escape}}
+        {\VAR{edu.degree | latex_escape}}
+        {\VAR{edu.school | latex_escape}}
+        {
+\BLOCK{if edu.major}
+        \VAR{edu.major | latex_escape}
+\BLOCK{endif}
+\BLOCK{if edu.thesis}
+        \\ \textbf{Thesis:} \VAR{edu.thesis | latex_escape}
+\BLOCK{endif}
+        }
+\BLOCK{endfor}
+\end{entrylist}
+\BLOCK{endif}
+
+%----------------------------------------------------------------------------------------
+%    LANGUAGES
+%----------------------------------------------------------------------------------------
+
+\BLOCK{if languages}
+\cvsect{\VAR{labels.languages | default('Languages') | latex_escape}}
+
+\vspace{2pt}
+
+\begin{minipage}{\textwidth}
+\BLOCK{for lang in languages}
+    \textbf{\VAR{lang.name | latex_escape}:} \VAR{lang.level | latex_escape}\BLOCK{if not loop.last} \hspace{2cm} \BLOCK{endif}
+\BLOCK{endfor}
+\end{minipage}
+\BLOCK{endif}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

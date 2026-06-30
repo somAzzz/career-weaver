@@ -1,0 +1,35 @@
+ML Platform Engineer - Real-Time Inference
+
+Company: AtlasAI
+Location: Hybrid - San Francisco, CA
+
+AtlasAI builds machine learning products for logistics teams. We are looking for
+an ML Platform Engineer to improve real-time inference APIs, batch feature
+pipelines, and model deployment workflows. This is an infrastructure-focused role,
+not a research role.
+
+Responsibilities
+
+- Build and maintain real-time inference services with low-latency API contracts
+- Improve model deployment workflows, rollback safety, and runtime observability
+- Partner with data scientists to productionize models and troubleshoot performance issues
+- Build batch and streaming data pipelines for model features
+- Improve reliability of Python services running on AWS and Kubernetes
+- Create tests, dashboards, and operational runbooks for ML services
+
+Required qualifications
+
+- 4+ years of software engineering experience
+- Strong Python backend engineering experience
+- Experience building production APIs with FastAPI, Flask, Django, or similar frameworks
+- Experience with Docker, Kubernetes, and AWS
+- Experience with data pipelines, Kafka, Spark, Airflow, or similar systems
+- Strong debugging and performance optimization skills
+
+Preferred qualifications
+
+- Experience operating ML inference services
+- Experience with Redis caching, model warmup, batching, or latency optimization
+- Familiarity with feature stores, model registries, or ML experiment tracking
+- Experience with Prometheus, Grafana, or OpenTelemetry
+- Experience collaborating with data science teams

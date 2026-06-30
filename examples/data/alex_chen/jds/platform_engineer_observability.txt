@@ -1,0 +1,34 @@
+Senior Platform Engineer - Observability
+
+Company: SignalForge
+Location: Remote - US
+
+SignalForge provides observability tooling for engineering organizations running
+microservices on Kubernetes. We are hiring a Senior Platform Engineer to improve
+our internal telemetry platform and help product teams understand service health.
+
+Responsibilities
+
+- Build and operate observability infrastructure for logs, metrics, traces, and SLOs
+- Create reusable dashboards, alerting standards, and service health scorecards
+- Partner with product engineering teams to instrument Go, Python, and Node.js services
+- Improve Kubernetes platform reliability and reduce alert fatigue
+- Participate in on-call rotation and lead post-incident reviews
+- Build internal tools that help teams understand deployment, latency, and error-rate trends
+
+Required qualifications
+
+- 5+ years of backend or platform engineering experience
+- Production Kubernetes experience
+- Strong experience with Prometheus, Grafana, OpenTelemetry, or comparable tooling
+- Strong programming ability in Go or Python
+- Experience designing incident response, SLO, or alerting practices
+- Comfort writing clear technical documentation for other engineers
+
+Preferred qualifications
+
+- Experience with Kafka or high-volume event pipelines
+- Experience with Terraform or Helm
+- Experience reducing cloud infrastructure cost
+- Experience building developer-facing tools
+- Experience speaking or writing about reliability practices

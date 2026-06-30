@@ -1,0 +1,17 @@
+[project]
+name = "career-weaver"
+version = "0.1.0"
+description = "Multilingual coding-agent skill for tailored resumes, JD analysis, and interview prep"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "jinja2>=3.1.0",
+    "pyyaml>=6.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
