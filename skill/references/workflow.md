@@ -9,9 +9,9 @@ This skill should feel conversational to the user. Translate simple user request
 3. User provides a JD.
 4. Save the JD to `data/{person}/jds/{job}.txt` with `scripts/setup_workflow.py save-jd`.
 5. Analyze fit and write `output/{person}/jobs/{job}/deliverables/match_report.md`.
-6. Create tailored `output/{person}/jobs/{job}/debug/resume_data.json`.
+6. Use the match report strategy to create tailored `output/{person}/jobs/{job}/debug/resume_data.json`.
 7. Render the PDF with `scripts/render_resume.py`.
-8. Optionally create `deliverables/interview_prep.md`.
+8. Optionally create `deliverables/interview_prep.md` from the profile, JD, match report, and final resume JSON.
 
 ## Deterministic Conversation Funnel
 
@@ -108,17 +108,20 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 
 1. Read `data/{person}/profile.yaml`.
 2. Read `data/{person}/jds/{job}.txt`.
-3. Compare JD requirements against verified profile facts and constraints.
-4. Save `output/{person}/jobs/{job}/deliverables/match_report.md` using `references/report_schema.md`.
+3. Parse JD requirements into must-have, nice-to-have, responsibilities, hidden signals, and red flags.
+4. Compare JD requirements against verified profile facts and constraints.
+5. Build evidence-backed scoring, keyword coverage, gaps, do-not-claim boundaries, and resume strategy.
+6. Save `output/{person}/jobs/{job}/deliverables/match_report.md` using `references/report_schema.md`.
 
 ### "Generate my resume"
 
 1. Read the profile, JD, and match report if present.
-2. Select the strongest relevant facts from the profile.
-3. Generate a tailored factual summary.
-4. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
-5. If the target resume language is not English, apply `references/localization.md`.
-6. Render:
+2. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
+3. Select the strongest relevant facts from the profile.
+4. Generate a tailored factual summary.
+5. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
+6. If the target resume language is not English, apply `references/localization.md`.
+7. Render:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job}
@@ -142,7 +145,33 @@ When generating a photo resume, include:
 
 ### "Prepare me for the interview"
 
-Read the JD and generated `resume_data.json`, then save `output/{person}/jobs/{job}/deliverables/interview_prep.md`. Generate questions only, not answers. See `references/interview_prep.md`.
+1. Read `data/{person}/profile.yaml`.
+2. Read `data/{person}/jds/{job}.txt`.
+3. Read `output/{person}/jobs/{job}/deliverables/match_report.md`.
+4. Read `output/{person}/jobs/{job}/debug/resume_data.json`.
+5. Generate `output/{person}/jobs/{job}/deliverables/interview_prep.md` using `references/interview_prep.md`.
+
+Generate questions, what-they-test notes, best evidence to prepare, and avoid-saying guidance. Do not generate full answers unless the user asks for coaching.
+
+## Information Dependency
+
+Career Weaver should preserve this strategy chain:
+
+```text
+profile.yaml + JD
+      ↓
+match_report.md
+      ↓
+debug/resume_data.json
+      ↓
+deliverables/{person}_{job}_resume.pdf
+      ↓
+deliverables/interview_prep.md
+```
+
+- `match_report.md` determines resume strategy.
+- `debug/resume_data.json` should implement that strategy without inventing facts.
+- `interview_prep.md` should inherit final resume claims and match report gaps.
 
 ## Output Layout
 

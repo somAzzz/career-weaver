@@ -92,6 +92,7 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - Treat `do_not_claim`, `constraints`, and `review_notes` in profile data as hard boundaries.
 - Translate and localize wording, section labels, and role summaries into the target language, but never translate into new claims.
 - If source material is ambiguous, preserve uncertainty in `review_notes` or ask a short clarification question.
+- Treat `match_report.md` as the strategy source for resume generation and interview prep; interview gap defense must inherit match report gaps.
 - Keep generated resume JSON as plain text. The renderer applies LaTeX escaping.
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.
