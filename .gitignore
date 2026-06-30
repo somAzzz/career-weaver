@@ -12,6 +12,8 @@ wheels/
 .claude
 .claude/*
 .claude/**
+.vscode/
+.vscode/*
 
 # Resume generation outputs
 output/
