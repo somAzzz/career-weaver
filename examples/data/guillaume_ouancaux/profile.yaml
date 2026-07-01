@@ -1,0 +1,228 @@
+# Master Profile Data
+# Fictional sample data extracted from the original LuxSleek-CV example.
+# Use this profile to preview and test the LuxSleek two-column template.
+
+profile:
+  name: "Guillaume Ouancaux"
+  headline: "Data Analyst / Data Scientist"
+  summary: |
+    Innovative and passionate data analyst with over 15 years of experience in
+    the chocolate and confectionery industry, seeking to leverage extensive
+    background in data analysis, flavour profiling, and market trends.
+    Proficient in Python programming, with experience developing and maintaining
+    scalable and efficient software applications. Demonstrated strong
+    problem-solving skills through optimized algorithms and data structures in
+    Python that improved system performance.
+  target_roles:
+    - "Data Analyst"
+    - "Data Scientist"
+    - "Senior Data Scientist"
+  citizenship: "United Kingdom"
+  family_status: "Single without children"
+
+contact:
+  email: "wonky.william123@gmail.com"
+  phone: "+352 123 456 789"
+  location: "49 Paddocks Spring, Farthingtonshire SG2 9UD, UK"
+  github: "https://github.com/WillyWonka"
+
+preferences:
+  industries:
+    - "Chocolate and confectionery"
+    - "Food and health"
+    - "Market analysis"
+
+experience:
+  - company: "Shockelasrull"
+    role: "Senior Data Scientist"
+    location: "Luxembourg"
+    period: "2021.04 - Present"
+    description: "Natural language processing, topic modelling, olfactory analysis, building chained processes, and automation of reports."
+    domains:
+      - "natural language processing"
+      - "topic modelling"
+      - "olfactory analysis"
+      - "report automation"
+    technologies:
+      - "Python"
+    achievements:
+      - "Built chained data processes for analysis and reporting workflows"
+      - "Automated reporting workflows for data science outputs"
+
+  - company: "Chocky-Facky SA"
+    role: "Data Scientist"
+    location: "United Kingdom"
+    period: "2019.02 - 2020.11"
+    description: "Predictive models for consumer taste preferences, market trend analysis, advanced data visualisation, and stakeholder negotiations."
+    domains:
+      - "predictive modelling"
+      - "consumer taste preferences"
+      - "market trend analysis"
+      - "data visualisation"
+    achievements:
+      - "Developed predictive models for consumer taste preferences"
+      - "Analyzed market trends and created advanced data visualisations"
+      - "Negotiated analysis outcomes and priorities with stakeholders"
+
+  - company: "Chocolate River Factory"
+    role: "Data Analyst"
+    location: "France"
+    period: "2018.02 - 2018.12"
+    description: "Data collection processes, research on carbonation levels, and collaboration with product development teams."
+    domains:
+      - "data collection"
+      - "product development"
+      - "carbonation analysis"
+    achievements:
+      - "Supported and improved data collection processes"
+      - "Researched carbonation levels in collaboration with product development teams"
+
+  - company: "Everlasting Gobstopper Ltd."
+    role: "Research Support"
+    location: "Mongolia"
+    period: "2016.05 - 2018.01"
+    description: "Developing and implementing methods for inferring causal networks from time-series, customer feedback analysis, mathematical optimisation, and machine learning."
+    domains:
+      - "causal networks"
+      - "time-series analysis"
+      - "customer feedback analysis"
+      - "machine learning"
+    technologies:
+      - "Machine learning"
+    achievements:
+      - "Developed methods for inferring causal networks from time-series data"
+      - "Analyzed customer feedback data with mathematical optimisation and machine learning methods"
+
+  - company: "Snozzberry Farms"
+    role: "Research Intern"
+    location: "Italy"
+    period: "2015.04 - 2015.07"
+    description: "Dashboard creation with BI tools and analysis of competitor strategies."
+    domains:
+      - "business intelligence"
+      - "competitor analysis"
+    achievements:
+      - "Created dashboards with BI tools"
+      - "Analyzed competitor strategies"
+
+  - company: "Whipple-Scrumptious Fudgemallow Delight Inc."
+    role: "Researcher"
+    location: "Guadeloupe"
+    period: "2013.09 - 2015.01"
+    description: "Econometric modelling, market data analysis, and translation."
+    domains:
+      - "econometric modelling"
+      - "market data analysis"
+      - "translation"
+    achievements:
+      - "Performed econometric modelling and market data analysis"
+      - "Supported translation work for research outputs"
+
+  - company: "Candy Confections"
+    role: "Intern in Logistics Management"
+    location: "Egypt"
+    period: "2012.04 - 2012.12"
+    description: "Data management with Microsoft Excel."
+    technologies:
+      - "Microsoft Excel"
+    achievements:
+      - "Managed logistics data with Microsoft Excel"
+
+  - company: "BEANS Publishing LLC"
+    role: "Editor"
+    location: "Japan"
+    period: "2009.03 - 2011.10"
+    description: "Editorial work on dentistry literature and proofreading."
+    domains:
+      - "editing"
+      - "proofreading"
+    achievements:
+      - "Edited dentistry literature"
+      - "Proofread publication materials"
+
+projects: []
+
+skills:
+  Programming and Data:
+    - "Python"
+    - "SQL"
+    - "PySpark"
+    - "R"
+    - "Matlab"
+  Platforms and Tools:
+    - "Azure Databricks"
+    - "MS Word"
+    - "Excel"
+    - "PowerPoint"
+    - "BI tools"
+  Analysis:
+    - "Data analysis"
+    - "Market trend analysis"
+    - "Predictive modelling"
+    - "Econometric modelling"
+    - "Time-series analysis"
+    - "Mathematical optimisation"
+    - "Machine learning"
+  Collaboration:
+    - "Communication"
+    - "Team collaboration"
+    - "Stakeholder negotiations"
+
+education:
+  - school: "University of Sweets and Treats"
+    degree: "Master in Economics"
+    major: "Mathematical Methods of Economic Analysis"
+    period: "2013 - 2015"
+    thesis: "The Effect of Beverage Sugar Content on Their Shelf Life"
+    coursework:
+      - "Econometric analysis"
+      - "Survival analysis"
+      - "Panel and time-series models"
+
+  - school: "Bolzmann State Technical University"
+    degree: "Bachelor of Science in Biology"
+    major: "Faculty of Experimental Confectionery"
+    period: "2006 - 2010"
+    coursework:
+      - "Mathematical modelling"
+      - "Numerical methods"
+      - "Mathematical optimisation"
+
+certifications: []
+
+additional_education:
+  - provider: "Coursera"
+    name: "Stanford Introduction to Food and Health"
+    period: "2021"
+    description: "Contemporary trends in eating, cooking workshop, and future directions in health."
+
+  - provider: "University of Cocoa"
+    name: "Topical Courses - Master in Chocolate Sculpting"
+    period: "2015 - 2017"
+    description: "Data science, statistics and probability, food science, agricultural science, optimal stopping theory, and cultural studies in food."
+
+languages:
+  - name: "French"
+    level: "B2"
+  - name: "Luxembourgish"
+    level: "A2"
+  - name: "German"
+    level: "A1"
+  - name: "English"
+    level: "Native"
+
+hobbies:
+  - category: "Music"
+    details: "Imitating birds on the banjo; composing and decomposing."
+  - category: "Poetry"
+    details: "Inventing rhymes; surreal art."
+  - category: "Miscellaneous"
+    details: "Zoology, mycology, trainspotting, and 1930s horror films."
+
+constraints:
+  do_not_claim:
+    - "Do not add degrees, certifications, employers, dates, metrics, or tools beyond the original LuxSleek example."
+
+review_notes:
+  - "This is fictional sample content from the LuxSleek-CV example, not a real candidate profile."
+  - "Some role achievements are normalized from prose descriptions in the source template and should be reviewed before use in a real resume."
