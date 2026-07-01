@@ -34,6 +34,9 @@ Use a deterministic question funnel when the user's request is underspecified. A
    - If a profile already exists, do not ask the user to upload a profile again. Ask whether they want to update the existing profile.
    - Do not ask the user about YAML.
    - Ask only about facts that affect truthfulness, such as missing dates, unclear employers, or ambiguous metrics.
+   - Validate the result with `python scripts/setup_workflow.py validate-profile --file data/{person}/profile.yaml`.
+   - `profile.target_roles` must include at least one target position the user is applying for.
+   - `contact.location` must stay short and non-specific, such as city/state/country-level text; do not store full street addresses or postal details.
 3. **Job Description**: Save the JD.
    - If the user pasted a JD, infer a job slug and save it.
    - If no JD is available, ask the user to paste the JD or provide a file path.
@@ -95,6 +98,7 @@ Use `scripts/setup_workflow.py` for deterministic setup:
 python scripts/setup_workflow.py save-jd --person "Alex Chen" --job "Senior Backend Engineer" --file jd.txt
 python scripts/setup_workflow.py add-photo --person "Alex Chen" --file headshot.jpg
 python scripts/setup_workflow.py init-job --person "Alex Chen" --job "Senior Backend Engineer"
+python scripts/setup_workflow.py validate-profile --file data/alex_chen/profile.yaml
 ```
 
 Render with:
@@ -120,9 +124,10 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - Treat `match_report.md` as the strategy source for resume generation and interview prep; interview gap defense must inherit match report gaps.
 - Do not skip JD collection for a tailored resume. Generate a generic resume only when the user explicitly requests it, and say that no JD tailoring was performed.
 - Do not reuse old match reports, resume JSON, generated scripts, or prior output directories unless the user explicitly chooses to reuse them for the current run.
+- Require the target position before saving a JD, initializing a job, or generating a resume. Do not proceed with an empty, TODO, unknown, or placeholder job title.
 - Ask whether the user has/wants a photo before rendering any resume PDF; do not silently default to a no-photo template.
 - Ask the user to choose a resume template before rendering any resume PDF; do not silently default to `engineer`.
-- Render resume location as city/region-level text. Do not put full street addresses in compact headers unless the user explicitly asks.
+- Store and render the main contact location as short city/state/country-level text. Do not put full street addresses, postal codes, or apartment/neighborhood details in profile data or compact headers unless the user explicitly asks.
 - Keep generated resume JSON as plain text. The renderer applies LaTeX escaping.
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.

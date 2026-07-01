@@ -24,6 +24,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES_ROOT = ROOT / "assets" / "templates"
 DEFAULT_WORKSPACE = Path.cwd()
+PLACEHOLDER_VALUES = {"", "todo", "tbd", "unknown", "n/a", "na", "none", "untitled"}
 
 
 def workspace_path(args: argparse.Namespace) -> Path:
@@ -42,6 +43,82 @@ def slugify(value: str) -> str:
     text = value.strip().lower()
     text = re.sub(r"[^a-z0-9]+", "_", text)
     return text.strip("_") or "untitled"
+
+
+class ProfileValidationError(ValueError):
+    """Raised when profile.yaml is missing required master-profile fields."""
+
+
+def is_placeholder(value: Any) -> bool:
+    return str(value or "").strip().lower() in PLACEHOLDER_VALUES
+
+
+def require_profile_text(data: dict[str, Any], key: str, path: str) -> str:
+    value = data.get(key)
+    if not isinstance(value, str) or is_placeholder(value):
+        raise ProfileValidationError(f"{path}.{key} must be a non-empty, non-placeholder string")
+    return value.strip()
+
+
+def validate_job_title(job: str) -> str:
+    if is_placeholder(job):
+        raise ValueError("job must be the target position being applied for, not TODO/unknown/empty")
+    return slugify(job)
+
+
+def validate_resume_safe_location(location: str, path: str) -> None:
+    text = location.strip()
+    if re.search(r"\d", text):
+        raise ProfileValidationError(f"{path} must be city/state/country level only; remove street/postal details")
+    if len(text) > 60:
+        raise ProfileValidationError(f"{path} is too long for resume display; keep it to city/state/country level")
+    if any(is_placeholder(part) for part in re.split(r"[,/|-]", text)):
+        raise ProfileValidationError(f"{path} must not contain placeholder location parts")
+
+
+def validate_profile_data(data: dict[str, Any]) -> None:
+    if not isinstance(data, dict):
+        raise ProfileValidationError("profile.yaml root must be an object")
+
+    profile = data.get("profile")
+    if not isinstance(profile, dict):
+        raise ProfileValidationError("$.profile must be an object")
+    require_profile_text(profile, "name", "$.profile")
+
+    target_roles = profile.get("target_roles")
+    if not isinstance(target_roles, list) or not target_roles:
+        raise ProfileValidationError("$.profile.target_roles must include at least one target position")
+    for index, role in enumerate(target_roles):
+        if not isinstance(role, str) or is_placeholder(role):
+            raise ProfileValidationError(
+                f"$.profile.target_roles[{index}] must be the target position being applied for"
+            )
+
+    contact = data.get("contact")
+    if not isinstance(contact, dict):
+        raise ProfileValidationError("$.contact must be an object")
+    require_profile_text(contact, "email", "$.contact")
+    location = require_profile_text(contact, "location", "$.contact")
+    validate_resume_safe_location(location, "$.contact.location")
+
+
+def load_profile(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise FileNotFoundError(f"profile not found: {path}")
+
+    try:
+        import yaml
+    except ImportError as error:
+        raise ProfileValidationError("PyYAML is required for validate-profile; install with: python -m pip install pyyaml") from error
+
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as error:
+        raise ProfileValidationError(f"invalid YAML: {error}") from error
+
+    if not isinstance(data, dict):
+        raise ProfileValidationError("profile.yaml root must be an object")
+    return data
 
 
 def discover_templates() -> dict[str, Path]:
@@ -130,7 +207,11 @@ def command_init_profile(args: argparse.Namespace) -> int:
 
 def command_save_jd(args: argparse.Namespace) -> int:
     person = person_slug(args.person)
-    job = slugify(args.job)
+    try:
+        job = validate_job_title(args.job)
+    except ValueError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
     person_dir = ensure_person_dirs(person, args)
     job_dir = ensure_job_dirs(person, job, args)
 
@@ -172,12 +253,28 @@ def command_add_photo(args: argparse.Namespace) -> int:
 
 def command_init_job(args: argparse.Namespace) -> int:
     person = person_slug(args.person)
-    job = slugify(args.job)
+    try:
+        job = validate_job_title(args.job)
+    except ValueError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
     ensure_person_dirs(person, args)
     job_dir = ensure_job_dirs(person, job, args)
     print(f"JOB_DIR: {job_dir}")
     print(f"DEBUG_JSON: {job_dir / 'debug' / 'resume_data.json'}")
     print(f"DELIVERABLES: {job_dir / 'deliverables'}")
+    return 0
+
+
+def command_validate_profile(args: argparse.Namespace) -> int:
+    path = Path(args.file)
+    try:
+        validate_profile_data(load_profile(path))
+    except (FileNotFoundError, ProfileValidationError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+
+    print(f"OK: {path}")
     return 0
 
 
@@ -236,6 +333,13 @@ def build_parser() -> argparse.ArgumentParser:
     init_profile.add_argument("--name", required=True, help="Person name, e.g. 'Alex Chen'.")
     init_profile.add_argument("--force", action="store_true", help="Overwrite an existing profile.yaml.")
     init_profile.set_defaults(func=command_init_profile)
+
+    validate_profile = subparsers.add_parser(
+        "validate-profile",
+        help="Validate profile.yaml required fields and resume-safe contact location.",
+    )
+    validate_profile.add_argument("--file", required=True, help="Path to profile.yaml.")
+    validate_profile.set_defaults(func=command_validate_profile)
 
     save_jd = subparsers.add_parser("save-jd", help="Save a JD from text, stdin, or an existing file.")
     save_jd.add_argument("--person", required=True, help="Person name or slug.")

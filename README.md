@@ -73,6 +73,12 @@ Add a profile photo:
 python skill/scripts/setup_workflow.py add-photo --person "Alex Chen" --file headshot.jpg
 ```
 
+Validate a profile before generating outputs:
+
+```bash
+python skill/scripts/setup_workflow.py validate-profile --file data/alex_chen/profile.yaml
+```
+
 Render an existing generated resume:
 
 ```bash
@@ -203,6 +209,12 @@ python skill/scripts/setup_workflow.py save-jd --person "Alex Chen" --job "Senio
 
 ```bash
 python skill/scripts/setup_workflow.py add-photo --person "Alex Chen" --file headshot.jpg
+```
+
+生成产物前检查 profile：
+
+```bash
+python skill/scripts/setup_workflow.py validate-profile --file data/alex_chen/profile.yaml
 ```
 
 渲染已有的简历数据：

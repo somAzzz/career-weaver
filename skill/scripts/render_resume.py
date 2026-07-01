@@ -27,6 +27,7 @@ TEMPLATES_ROOT = ROOT / "assets" / "templates"
 DEFAULT_OUTPUT = Path("output")
 DEFAULT_DATA = Path("debug") / "resume_data.json"
 LATEX_TIMEOUT_SECONDS = 120
+PLACEHOLDER_VALUES = {"", "todo", "tbd", "unknown", "n/a", "na", "none", "untitled"}
 
 LATEX_SPECIALS = {
     "%": r"\%",
@@ -43,6 +44,10 @@ LATEX_SPECIALS = {
 
 class ResumeValidationError(ValueError):
     """Raised when resume JSON does not match the template contract."""
+
+
+def is_placeholder(value: Any) -> bool:
+    return str(value or "").strip().lower() in PLACEHOLDER_VALUES
 
 
 def slugify(value: Any) -> str:
@@ -148,9 +153,19 @@ def require_list(data: dict[str, Any], key: str, path: str) -> list[Any]:
 
 def require_text(data: dict[str, Any], key: str, path: str) -> str:
     value = data.get(key)
-    if not isinstance(value, str) or not value.strip():
-        raise ResumeValidationError(f"{path}.{key} must be a non-empty string")
+    if not isinstance(value, str) or is_placeholder(value):
+        raise ResumeValidationError(f"{path}.{key} must be a non-empty, non-placeholder string")
     return value
+
+
+def validate_resume_safe_location(location: str, path: str) -> None:
+    text = location.strip()
+    if re.search(r"\d", text):
+        raise ResumeValidationError(f"{path} must be city/state/country level only; remove street/postal details")
+    if len(text) > 60:
+        raise ResumeValidationError(f"{path} is too long for resume display; keep it to city/state/country level")
+    if any(is_placeholder(part) for part in re.split(r"[,/|-]", text)):
+        raise ResumeValidationError(f"{path} must not contain placeholder location parts")
 
 
 def validate_bulleted_entries(entries: list[Any], path: str, title_key: str) -> None:
@@ -180,6 +195,7 @@ def validate_resume_data(data: dict[str, Any]) -> None:
     contact = require_mapping(data, "contact", "$")
     for key in ("email", "location"):
         require_text(contact, key, "$.contact")
+    validate_resume_safe_location(str(contact["location"]), "$.contact.location")
 
     skills = require_mapping(data, "skills", "$")
     if not skills:

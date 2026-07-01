@@ -33,6 +33,9 @@ Rules:
 - Preserve uncertainty in `review_notes`.
 - If an existing profile exists, ask whether the user wants to update it instead of asking them to upload a profile again.
 - When updating an existing profile, merge carefully and do not delete facts unless the user asks.
+- `profile.target_roles` is required and must contain at least one target position the user is applying for.
+- `contact.location` is required and must stay short and non-specific, such as city/state/country-level text; do not store street address, postal code, apartment, or neighborhood details.
+- After writing or updating `profile.yaml`, run `python scripts/setup_workflow.py validate-profile --file data/{person}/profile.yaml` and fix any errors before generating outputs.
 - If the user provides a PDF or DOCX and the local environment cannot extract it, ask for pasted text or a text export.
 
 ## JD Import
@@ -44,6 +47,7 @@ python scripts/setup_workflow.py save-jd --person "{person}" --job "{job}" --fil
 ```
 
 For direct pasted text, the agent may write it to a temporary text file or pass it through stdin. Preserve the full JD text; do not summarize it in the JD file.
+The `--job` value must be the target position being applied for, not a placeholder such as `TODO`, `unknown`, or `general`.
 
 Create the job output directory:
 

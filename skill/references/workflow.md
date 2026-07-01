@@ -35,6 +35,9 @@ Goal: produce a usable master profile.
 - If a usable profile already exists and the user has not provided new resume/profile material, ask whether they want to update it instead of asking them to upload it again.
 - If extraction leaves important uncertainty, ask one concise clarification question.
 - If the uncertainty is not blocking, write it to `review_notes` and continue.
+- Before continuing, run `python scripts/setup_workflow.py validate-profile --file data/{person}/profile.yaml`.
+- If validation fails because `profile.target_roles` is missing, ask the user for the position they are applying for.
+- If validation fails because `contact.location` contains a full address, postal code, or overly specific location, ask for a short city/state/country-level location only.
 
 ### Step 3: JD
 
@@ -45,6 +48,7 @@ Goal: save the full JD exactly once.
 - If no JD is available, do not silently create `general_resume`.
 - Ask: "Please paste the job description or provide a JD file path. If you want a generic resume instead, say so explicitly."
 - Continue without a JD only when the user explicitly asks for a generic resume, sample render, or template preview. In that case use the job slug `general_resume`, skip `match_report.md`, and state that the resume is not tailored to a job.
+- Even for generic resumes, the user's target position is required in `profile.target_roles` and the resume `role`.
 
 ### Step 4: Output Choice
 
@@ -147,6 +151,7 @@ Generate the selected artifacts. In the final reply, list only files in `deliver
 ### "Import my resume"
 
 Read `references/importing.md`. Extract facts from the supplied text or file and create `data/{person}/profile.yaml`. Include `review_notes` for uncertain or missing facts.
+Validate the result with `python scripts/setup_workflow.py validate-profile --file data/{person}/profile.yaml`.
 
 ### "Here is a JD"
 
@@ -170,20 +175,21 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 ### "Generate my resume"
 
 1. Read the profile.
-2. If no JD is available, ask for a JD unless the user explicitly requested a generic resume, sample render, or template preview.
-3. If prior job outputs or helper scripts exist and the user has not chosen reuse, ask the Run Scope And Reuse Choice question. Do not copy old `match_report.md` or `resume_data.json` by default.
-4. For JD-targeted resumes, read the selected JD. Generate or refresh `match_report.md` from the current `profile.yaml` + JD unless the user explicitly chose to reuse an existing strategy.
-5. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
-6. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
-7. Select the strongest relevant facts from the profile.
-8. Generate a factual summary.
-9. Create a fresh `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md` unless the user explicitly chose to reuse existing resume data.
-10. If the target resume language is not English, apply `references/localization.md`.
-11. Ask the photo choice before rendering if the user has not already made an explicit photo/no-photo decision. Do this before final template selection.
-12. Ask the template choice before rendering if the user has not already selected a template. Do not silently default to `engineer`.
-13. If multiple PDFs are requested, ask for the exact version matrix unless already explicit.
-14. Use city/region-level `contact.display_location` for the rendered resume; do not put full street addresses in compact template headers unless the user explicitly asks.
-15. Render:
+2. Validate the profile with `python scripts/setup_workflow.py validate-profile --file data/{person}/profile.yaml`; if the target position or resume-safe short location is missing, ask for it before continuing.
+3. If no JD is available, ask for a JD unless the user explicitly requested a generic resume, sample render, or template preview.
+4. If prior job outputs or helper scripts exist and the user has not chosen reuse, ask the Run Scope And Reuse Choice question. Do not copy old `match_report.md` or `resume_data.json` by default.
+5. For JD-targeted resumes, read the selected JD. Generate or refresh `match_report.md` from the current `profile.yaml` + JD unless the user explicitly chose to reuse an existing strategy.
+6. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
+7. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
+8. Select the strongest relevant facts from the profile.
+9. Generate a factual summary.
+10. Create a fresh `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md` unless the user explicitly chose to reuse existing resume data.
+11. If the target resume language is not English, apply `references/localization.md`.
+12. Ask the photo choice before rendering if the user has not already made an explicit photo/no-photo decision. Do this before final template selection.
+13. Ask the template choice before rendering if the user has not already selected a template. Do not silently default to `engineer`.
+14. If multiple PDFs are requested, ask for the exact version matrix unless already explicit.
+15. Use short city/state/country-level `contact.location` or `contact.display_location` for the rendered resume; do not put full street addresses in compact template headers unless the user explicitly asks.
+16. Render:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job}

@@ -76,7 +76,8 @@ Create `output/{person}/jobs/{job}/debug/resume_data.json` as plain JSON. Do not
 - Optional: `contact.phone`, `contact.display_location`, `github`, `linkedin`, `projects`, `research`, `certifications`, `languages`, `hobbies`, `photo`.
 - Optional but recommended for multilingual output: `target_language` and `labels`.
 - Generate this JSON from verified `profile.yaml` facts and the target JD. Do not use JD-only claims as resume facts.
-- Use city/region-level location for resume display. Do not render full street addresses unless the user explicitly asks; put a shortened value in `contact.display_location` when the master profile has a full address.
+- `role` must be the target position the user is applying for. Do not use an empty, TODO, unknown, or placeholder role.
+- Use a short, non-specific city/state/country-level location for resume display, for example `San Francisco, CA` or `Germany - Berlin`. Do not render full street addresses unless the user explicitly asks.
 - If the target language is not English, translate resume-facing text and localize `labels`; preserve company names, product names, metrics, and technologies.
 - Keep bullets concise and evidence-backed. Prefer 2-5 bullets per role.
 - Use `date` consistently; templates render it exactly as provided.
