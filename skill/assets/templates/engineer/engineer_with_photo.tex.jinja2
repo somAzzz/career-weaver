@@ -39,7 +39,7 @@
     \vspace{0pt}
     \fontsize{8}{10}\selectfont
 
-    \icon{MapMarker}{8}{\VAR{contact.location | latex_escape}}\\
+    \icon{MapMarker}{8}{\VAR{contact.display_location | default(contact.location) | latex_escape}}\\
 \BLOCK{if contact.phone}
     \icon{Phone}{8}{\VAR{contact.phone | latex_escape}}\\
 \BLOCK{endif}

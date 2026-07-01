@@ -45,7 +45,7 @@ When the user asks what templates are available:
 python scripts/setup_workflow.py list-templates
 ```
 
-Show the template names to the user and ask which one they prefer only when the choice is not already clear. Templates marked `[photo]` support `photo.filename`; if the user selects one, ask the mandatory photo question before rendering.
+Show the template names to the user and ask which one they prefer before rendering a resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults. Templates marked `[photo]` support `photo.filename`; if the user selects one, ask the mandatory photo question before rendering.
 
 ## Choose A Template
 
@@ -57,6 +57,8 @@ python scripts/render_resume.py --output output/{person}/jobs/{job} --template a
 ```
 
 Prefer template names in user-facing instructions. Paths are useful for debugging or one-off templates.
+
+Before rendering any resume PDF, ask which template to use unless the user already specified one. Do not silently default to `engineer`.
 
 ## Selection Guidance
 
@@ -73,6 +75,6 @@ Bundled photo-capable templates:
 - `engineer_with_photo`
 - `luxsleek`
 
-Before rendering any photo-capable template, ask whether the user has a photo or wants a no-photo version. Do not silently default unless the user explicitly asks Codex to choose defaults.
+Before rendering any resume PDF, ask whether the user has a photo or wants a no-photo version. Ask before final template selection so the agent cannot silently choose a no-photo template to avoid the question. Do not silently default unless the user explicitly asks Codex to choose defaults.
 
 For markets or roles where photos are uncommon, recommend a no-photo version after asking.

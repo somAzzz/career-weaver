@@ -73,6 +73,26 @@ def display_url(url: str) -> str:
     return re.sub(r"^https?://(www\.)?", "", url).rstrip("/")
 
 
+def compact_location(location: Any) -> str:
+    """Prefer a resume-safe location over a full street address."""
+    text = str(location or "").strip()
+    if not text:
+        return ""
+
+    parts = [part.strip() for part in text.split(",") if part.strip()]
+    if len(parts) >= 3 and re.match(r"^\d+\b", parts[0]):
+        locality = re.sub(
+            r"\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b$",
+            "",
+            parts[-2],
+            flags=re.IGNORECASE,
+        ).strip()
+        locality = re.sub(r"\b\d{4,6}\b$", "", locality).strip()
+        return f"{locality}, {parts[-1]}" if locality else parts[-1]
+
+    return text
+
+
 def discover_templates() -> dict[str, Path]:
     """Return bundled/custom templates by stable name."""
     templates: dict[str, Path] = {}
@@ -204,6 +224,9 @@ def load_resume_data(path: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ResumeValidationError("Resume data root must be an object")
     validate_resume_data(data)
+    contact = data.get("contact")
+    if isinstance(contact, dict):
+        contact.setdefault("display_location", compact_location(contact.get("location")))
     return data
 
 
@@ -223,6 +246,7 @@ def build_jinja_env(template_dir: Path) -> Environment:
     )
     env.filters["latex_escape"] = latex_escape
     env.filters["display_url"] = display_url
+    env.filters["compact_location"] = compact_location
     return env
 
 

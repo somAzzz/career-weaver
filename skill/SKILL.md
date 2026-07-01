@@ -43,18 +43,20 @@ Use a deterministic question funnel when the user's request is underspecified. A
    2. Tailored resume PDF only
    3. Match analysis + tailored resume PDF
    4. Full package: match analysis + resume PDF + interview prep
-5. **Photo Choice**: Ask only when a photo is relevant or the user mentions one:
+5. **Photo Choice**: Ask before rendering any resume PDF unless the user already made an explicit photo/no-photo choice:
    1. No photo version
    2. Use existing photo
    3. Add a new photo
    4. Generate both photo and no-photo versions
-   - For templates that support photos, including `luxsleek`, `engineer_with_photo`, and custom templates that render `photo.filename`, this question is mandatory before rendering unless the user already chose.
+   - Do not choose a no-photo template just to avoid this question.
+   - If the user chooses a photo option, use a photo-capable template such as `luxsleek`, `engineer_with_photo`, or a custom template that renders `photo.filename`.
 6. **Language Choice**: Ask only if the target resume language is unclear.
    - Default to the JD language when obvious.
    - If the user speaks Chinese but the JD is German, interact in Chinese and generate the resume in German.
-7. **Template Choice**: Ask only if the user requests template selection or multiple templates are equally appropriate.
+7. **Template Choice**: Ask before rendering any resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults.
    - List templates with `python scripts/setup_workflow.py list-templates`.
    - Render with a template name such as `--template luxsleek`.
+   - Do not silently use the default `engineer` template.
 8. **Generate**: Run the selected workflow and show only the key `deliverables/` paths.
 
 Do not expose internal paths, debug files, schema details, or LaTeX details unless the user asks or there is a blocker.
@@ -108,7 +110,9 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - If source material is ambiguous, preserve uncertainty in `review_notes` or ask a short clarification question.
 - Treat `match_report.md` as the strategy source for resume generation and interview prep; interview gap defense must inherit match report gaps.
 - Do not skip JD collection for a tailored resume. Generate a generic resume only when the user explicitly requests it, and say that no JD tailoring was performed.
-- For any photo-capable template, ask whether the user has/wants a photo before rendering; do not silently default.
+- Ask whether the user has/wants a photo before rendering any resume PDF; do not silently default to a no-photo template.
+- Ask the user to choose a resume template before rendering any resume PDF; do not silently default to `engineer`.
+- Render resume location as city/region-level text. Do not put full street addresses in compact headers unless the user explicitly asks.
 - Keep generated resume JSON as plain text. The renderer applies LaTeX escaping.
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.

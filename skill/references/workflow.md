@@ -62,7 +62,7 @@ Default to option 4 when the user says "full pipeline", "apply to this job", or 
 
 ### Step 5: Photo Choice
 
-Always ask before rendering when the selected template supports photos. Also ask if the user mentions a photo, a photo file exists, or the target market commonly expects photo variants.
+Ask before rendering any resume PDF unless the user already made an explicit photo/no-photo choice in the current request. This happens before final template selection so the agent cannot silently choose a no-photo template to avoid the question.
 
 ```text
 Photo option?
@@ -72,7 +72,7 @@ Photo option?
 4. Generate both photo and no-photo versions
 ```
 
-For `luxsleek`, `engineer_with_photo`, and any custom template that renders `photo.filename`, this question is mandatory unless the user already made an explicit photo/no-photo choice in the current request.
+If the user chooses a photo option, use a photo-capable template such as `luxsleek`, `engineer_with_photo`, or a custom template that renders `photo.filename`.
 Default to no-photo for US roles only after the user answers or explicitly asks Codex to choose defaults.
 
 ### Step 6: Language Choice
@@ -89,7 +89,26 @@ Ask only if the target resume language is unclear:
 
 Default to the JD language when it is obvious. Keep interacting with the user in Chinese when the user uses Chinese, even if the resume output is German, French, or English. See `references/localization.md`.
 
-### Step 7: Finish
+### Step 7: Template Choice
+
+Ask before rendering any resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults. List available templates first:
+
+```bash
+python scripts/setup_workflow.py list-templates
+```
+
+Then ask:
+
+```text
+Which resume template should I use?
+1. engineer
+2. engineer_with_photo
+3. luxsleek
+```
+
+If `list-templates` shows different templates, use that list instead. Do not silently use the default `engineer` template.
+
+### Step 8: Finish
 
 Generate the selected artifacts. In the final reply, list only files in `deliverables/` plus any blockers or review notes that matter.
 
@@ -128,8 +147,10 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 6. Generate a factual summary.
 7. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
 8. If the target resume language is not English, apply `references/localization.md`.
-9. Ask the photo choice before rendering if the selected template supports photos and the user has not already decided. This is mandatory for `luxsleek`, `engineer_with_photo`, and custom templates that render `photo.filename`.
-10. Render:
+9. Ask the photo choice before rendering if the user has not already made an explicit photo/no-photo decision. Do this before final template selection.
+10. Ask the template choice before rendering if the user has not already selected a template. Do not silently default to `engineer`.
+11. Use city/region-level `contact.display_location` for the rendered resume; do not put full street addresses in compact template headers unless the user explicitly asks.
+12. Render:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job}

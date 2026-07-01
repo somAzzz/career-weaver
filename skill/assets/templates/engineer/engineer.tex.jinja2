@@ -9,7 +9,7 @@
 %    TITLE AND CONTACT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.48\textwidth}
     \vspace{-\baselineskip}
 
     {\fontsize{20}{24} \textcolor{black}{\textbf{\MakeUppercase{\VAR{name | latex_escape}}}}}
@@ -19,13 +19,13 @@
     {\Large \VAR{role | latex_escape}}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.22\textwidth}
+\begin{minipage}[t]{0.24\textwidth}
     \vspace{-\baselineskip}
 
 \BLOCK{if contact.phone}
     \icon{Phone}{10}{\VAR{contact.phone | latex_escape}}\\
 \BLOCK{endif}
-    \icon{MapMarker}{10}{\VAR{contact.location | latex_escape}}\\
+    \icon{MapMarker}{10}{\VAR{contact.display_location | default(contact.location) | latex_escape}}\\
 
 \end{minipage}
 \begin{minipage}[t]{0.27\textwidth}
