@@ -45,7 +45,7 @@ When the user asks what templates are available:
 python scripts/setup_workflow.py list-templates
 ```
 
-Show the template names to the user and ask which one they prefer only when the choice is not already clear.
+Show the template names to the user and ask which one they prefer only when the choice is not already clear. Templates marked `[photo]` support `photo.filename`; if the user selects one, ask the mandatory photo question before rendering.
 
 ## Choose A Template
 
@@ -64,4 +64,15 @@ Prefer template names in user-facing instructions. Paths are useful for debuggin
 - `engineer_with_photo`: technical resume with a photo block.
 - `luxsleek`: polished two-column sidebar CV with compact experience entries, useful when the user wants a more designed CV.
 
-For markets or roles where photos are uncommon, default to no-photo templates unless the user asks otherwise.
+## Photo-Capable Templates
+
+Treat a template as photo-capable when it renders `photo.filename`.
+
+Bundled photo-capable templates:
+
+- `engineer_with_photo`
+- `luxsleek`
+
+Before rendering any photo-capable template, ask whether the user has a photo or wants a no-photo version. Do not silently default unless the user explicitly asks Codex to choose defaults.
+
+For markets or roles where photos are uncommon, recommend a no-photo version after asking.

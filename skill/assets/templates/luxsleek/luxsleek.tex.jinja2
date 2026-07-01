@@ -3,12 +3,13 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[british]{babel}
-\usepackage[left = 0mm, right = 0mm, top = 0mm, bottom = 0mm]{geometry}
+\usepackage[left = 78mm, right = 15mm, top = 10mm, bottom = 10mm]{geometry}
 \usepackage[stretch = 25, shrink = 25]{microtype}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{marvosym}
 \usepackage{enumitem}
+\usepackage{eso-pic}
 \setlist{parsep = 0pt, topsep = 0pt, partopsep = 1pt, itemsep = 1pt, leftmargin = 6mm}
 
 \usepackage{FiraSans}
@@ -37,15 +38,18 @@
 \pagestyle{empty}
 \raggedbottom
 
-\begin{minipage}[t]{0.33\textwidth}
-\colorbox{cvblue}{\begin{minipage}[t][5mm][t]{\textwidth}\null\hfill\null\end{minipage}}
+\AddToShipoutPictureBG{%
+  \AtPageLowerLeft{\color{cvblue!90}\rule{0.33\paperwidth}{\paperheight}}%
+  \AtPageUpperLeft{\color{cvblue}\rule{0.33\paperwidth}{5mm}}%
+}
 
-\vspace{-.2ex}
-\colorbox{cvblue!90}{\color{white}
-\kern0.09\textwidth\relax
-\begin{minipage}[t][293mm][t]{0.82\textwidth}
+\AddToShipoutPictureFG*{%
+  \AtPageUpperLeft{%
+    \hspace*{0.03\paperwidth}%
+    \raisebox{-10mm}[0pt][0pt]{%
+      \begin{minipage}[t]{0.27\paperwidth}
+\color{white}
 \raggedright
-\vspace*{2.5ex}
 
 {\Large \VAR{name | latex_escape}}\par
 \vspace{0.6ex}
@@ -91,21 +95,19 @@
 \BLOCK{endfor}
 \end{itemize}
 
-\end{minipage}%
-\kern0.09\textwidth\relax
+      \end{minipage}%
+    }%
+  }%
 }
-\end{minipage}
-\hskip2.5em
-\begin{minipage}[t]{0.56\textwidth}
-\setlength{\parskip}{0.8ex}
 
-\vspace{2ex}
+\setlength{\parskip}{0.8ex}
 
 \BLOCK{if experience}
 \headright{\VAR{labels.experience | default('Experience') | latex_escape}}
 
 \BLOCK{for exp in experience}
-\textsc{\VAR{exp.role | latex_escape}} at \textit{\VAR{exp.company | latex_escape}.} \dates{\VAR{exp.date | latex_escape}} \\
+\textsc{\VAR{exp.role | latex_escape}} at \textit{\VAR{exp.company | latex_escape}.}\\[-0.4ex]
+\dates{\VAR{exp.date | latex_escape}}\\
 \BLOCK{if exp.description}
 \smaller{\VAR{exp.description | latex_escape}}\par
 \BLOCK{endif}
@@ -125,7 +127,8 @@
 \headright{\VAR{labels.projects | default('Projects') | latex_escape}}
 
 \BLOCK{for project in projects}
-\textsc{\VAR{project.title | latex_escape}} at \textit{\VAR{project.company | latex_escape}.} \dates{\VAR{project.date | latex_escape}} \\
+\textsc{\VAR{project.title | latex_escape}} at \textit{\VAR{project.company | latex_escape}.}\\[-0.4ex]
+\dates{\VAR{project.date | latex_escape}}\\
 \BLOCK{if project.description}
 \smaller{\VAR{project.description | latex_escape}}\par
 \BLOCK{endif}
@@ -145,7 +148,8 @@
 \headright{\VAR{labels.research | default('Research Projects') | latex_escape}}
 
 \BLOCK{for research_item in research}
-\textsc{\VAR{research_item.title | latex_escape}} at \textit{\VAR{research_item.company | latex_escape}.} \dates{\VAR{research_item.date | latex_escape}} \\
+\textsc{\VAR{research_item.title | latex_escape}} at \textit{\VAR{research_item.company | latex_escape}.}\\[-0.4ex]
+\dates{\VAR{research_item.date | latex_escape}}\\
 \BLOCK{if research_item.description}
 \smaller{\VAR{research_item.description | latex_escape}}\par
 \BLOCK{endif}
@@ -166,7 +170,8 @@
 \BLOCK{if edu.major}
 \VAR{edu.major | latex_escape}.
 \BLOCK{endif}
-\textit{\VAR{edu.school | latex_escape}.} \dates{\VAR{edu.date | latex_escape}} \\
+\textit{\VAR{edu.school | latex_escape}.}\\[-0.4ex]
+\dates{\VAR{edu.date | latex_escape}}\\
 \BLOCK{if edu.thesis}
 \smaller{\textbf{Thesis:} \VAR{edu.thesis | latex_escape}}\par
 \BLOCK{endif}
@@ -180,7 +185,8 @@
 \headright{\VAR{labels.certifications | default('Certifications') | latex_escape}}
 
 \BLOCK{for cert in certifications}
-\textsc{\VAR{cert.name | latex_escape}}\BLOCK{if cert.issuer} \textit{\VAR{cert.issuer | latex_escape}.}\BLOCK{endif}\BLOCK{if cert.date} \dates{\VAR{cert.date | latex_escape}}\BLOCK{endif}
+\textsc{\VAR{cert.name | latex_escape}}\BLOCK{if cert.issuer} \textit{\VAR{cert.issuer | latex_escape}.}\BLOCK{endif}\BLOCK{if cert.date}\\[-0.4ex]
+\dates{\VAR{cert.date | latex_escape}}\BLOCK{endif}
 \BLOCK{if cert.description}
 \\ \smaller{\VAR{cert.description | latex_escape}}\par
 \BLOCK{endif}
@@ -194,7 +200,5 @@
 \headright{\VAR{labels.hobbies | default('Hobbies') | latex_escape}}
 \VAR{hobbies | latex_escape}
 \BLOCK{endif}
-
-\end{minipage}
 
 \end{document}

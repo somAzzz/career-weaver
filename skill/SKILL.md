@@ -37,6 +37,7 @@ Use a deterministic question funnel when the user's request is underspecified. A
 3. **Job Description**: Save the JD.
    - If the user pasted a JD, infer a job slug and save it.
    - If no JD is available, ask the user to paste the JD or provide a file path.
+   - Do not create `general_resume` unless the user explicitly asks for a generic resume, sample render, or template preview.
 4. **Output Choice**: If the user did not specify the task, ask with numbered options:
    1. Match analysis only
    2. Tailored resume PDF only
@@ -47,6 +48,7 @@ Use a deterministic question funnel when the user's request is underspecified. A
    2. Use existing photo
    3. Add a new photo
    4. Generate both photo and no-photo versions
+   - For templates that support photos, including `luxsleek`, `engineer_with_photo`, and custom templates that render `photo.filename`, this question is mandatory before rendering unless the user already chose.
 6. **Language Choice**: Ask only if the target resume language is unclear.
    - Default to the JD language when obvious.
    - If the user speaks Chinese but the JD is German, interact in Chinese and generate the resume in German.
@@ -105,6 +107,8 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - Translate and localize wording, section labels, and role summaries into the target language, but never translate into new claims.
 - If source material is ambiguous, preserve uncertainty in `review_notes` or ask a short clarification question.
 - Treat `match_report.md` as the strategy source for resume generation and interview prep; interview gap defense must inherit match report gaps.
+- Do not skip JD collection for a tailored resume. Generate a generic resume only when the user explicitly requests it, and say that no JD tailoring was performed.
+- For any photo-capable template, ask whether the user has/wants a photo before rendering; do not silently default.
 - Keep generated resume JSON as plain text. The renderer applies LaTeX escaping.
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.

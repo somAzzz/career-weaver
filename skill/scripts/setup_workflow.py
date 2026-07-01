@@ -58,6 +58,10 @@ def discover_templates() -> dict[str, Path]:
     return templates
 
 
+def template_supports_photo(template_path: Path) -> bool:
+    return "photo.filename" in template_path.read_text(encoding="utf-8", errors="ignore")
+
+
 def person_slug(name: str) -> str:
     return slugify(name)
 
@@ -189,7 +193,8 @@ def command_list_templates(args: argparse.Namespace) -> int:
         if template_path in seen and name != template_path.parent.name:
             continue
         seen.add(template_path)
-        print(f"{name}: {template_path.relative_to(ROOT)}")
+        marker = " [photo]" if template_supports_photo(template_path) else ""
+        print(f"{name}{marker}: {template_path.relative_to(ROOT)}")
     return 0
 
 

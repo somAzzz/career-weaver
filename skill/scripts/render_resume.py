@@ -108,6 +108,10 @@ def resolve_template_path(template_arg: str) -> Path:
     raise FileNotFoundError(f"Template not found: {template_arg}. Available templates: {available}")
 
 
+def template_supports_photo(template_path: Path) -> bool:
+    return "photo.filename" in template_path.read_text(encoding="utf-8", errors="ignore")
+
+
 def require_mapping(data: dict[str, Any], key: str, path: str) -> dict[str, Any]:
     value = data.get(key)
     if not isinstance(value, dict):
@@ -317,6 +321,12 @@ def render(data_file: Path, template_file: Path, output_dir: Path, engine: str =
     data = load_resume_data(data_file)
     data.setdefault("labels", {})
     template_file = template_file.resolve()
+    if template_supports_photo(template_file) and not data.get("photo"):
+        print(
+            "Warning: selected template supports photos, but resume_data.json has no photo. "
+            "Confirm the user chose a no-photo render.",
+            file=sys.stderr,
+        )
     env = build_jinja_env(template_file.parent)
     template = env.get_template(template_file.name)
 
@@ -327,6 +337,7 @@ def render(data_file: Path, template_file: Path, output_dir: Path, engine: str =
     copy_photo(data, data_file, debug_path)
 
     build_pdf = debug_path / "tailored_resume.pdf"
+    build_pdf.unlink(missing_ok=True)
     compile_pdf(tex_file, debug_path, engine)
 
     final_pdf = deliverables_path / resume_pdf_name(data, output_dir)

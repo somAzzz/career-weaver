@@ -6,7 +6,7 @@ This skill should feel conversational to the user. Translate simple user request
 
 1. User provides a resume.
 2. Create `data/{person}/profile.yaml` from the resume. Ask only for essential missing facts.
-3. User provides a JD.
+3. User provides a JD, or explicitly asks for a generic/template-preview resume.
 4. Save the JD to `data/{person}/jds/{job}.txt` with `scripts/setup_workflow.py save-jd`.
 5. Analyze fit and write `output/{person}/jobs/{job}/deliverables/match_report.md`.
 6. Use the match report strategy to create tailored `output/{person}/jobs/{job}/debug/resume_data.json`.
@@ -42,7 +42,9 @@ Goal: save the full JD exactly once.
 
 - If the user pasted a JD, infer a concise job slug and save it.
 - If the user provided a file path, save/copy it with `scripts/setup_workflow.py save-jd`.
-- If no JD is available, ask: "Please paste the job description or provide a JD file path."
+- If no JD is available, do not silently create `general_resume`.
+- Ask: "Please paste the job description or provide a JD file path. If you want a generic resume instead, say so explicitly."
+- Continue without a JD only when the user explicitly asks for a generic resume, sample render, or template preview. In that case use the job slug `general_resume`, skip `match_report.md`, and state that the resume is not tailored to a job.
 
 ### Step 4: Output Choice
 
@@ -60,7 +62,7 @@ Default to option 4 when the user says "full pipeline", "apply to this job", or 
 
 ### Step 5: Photo Choice
 
-Ask only if the user mentions a photo, a photo file exists, or the target market commonly expects photo variants:
+Always ask before rendering when the selected template supports photos. Also ask if the user mentions a photo, a photo file exists, or the target market commonly expects photo variants.
 
 ```text
 Photo option?
@@ -70,7 +72,8 @@ Photo option?
 4. Generate both photo and no-photo versions
 ```
 
-Default to no-photo for US roles unless the user asks otherwise.
+For `luxsleek`, `engineer_with_photo`, and any custom template that renders `photo.filename`, this question is mandatory unless the user already made an explicit photo/no-photo choice in the current request.
+Default to no-photo for US roles only after the user answers or explicitly asks Codex to choose defaults.
 
 ### Step 6: Language Choice
 
@@ -117,19 +120,22 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 
 ### "Generate my resume"
 
-1. Read the profile, JD, and match report if present.
-2. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
-3. Select the strongest relevant facts from the profile.
-4. Generate a tailored factual summary.
-5. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
-6. If the target resume language is not English, apply `references/localization.md`.
-7. Render:
+1. Read the profile.
+2. If no JD is available, ask for a JD unless the user explicitly requested a generic resume, sample render, or template preview.
+3. For JD-targeted resumes, read the JD and match report if present. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
+4. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
+5. Select the strongest relevant facts from the profile.
+6. Generate a factual summary.
+7. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
+8. If the target resume language is not English, apply `references/localization.md`.
+9. Ask the photo choice before rendering if the selected template supports photos and the user has not already decided. This is mandatory for `luxsleek`, `engineer_with_photo`, and custom templates that render `photo.filename`.
+10. Render:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job}
 ```
 
-Use `--template assets/templates/engineer/engineer_with_photo.tex.jinja2` when `photo.filename` is present and the user wants a photo version.
+Use `--template engineer_with_photo` or `--template luxsleek` when `photo.filename` is present and the user wants a photo version.
 
 ### "Use this photo"
 
@@ -216,4 +222,5 @@ Open:
 
 - Use Python scripts for setup and rendering instead of shell-specific loops.
 - Avoid POSIX-only commands in reusable instructions.
-- If `pdflatex` is missing, report the missing dependency and preserve `debug/tailored_resume.tex`.
+- Use `scripts/render_resume.py --engine auto` by default so the renderer can choose `pdflatex` or Tectonic.
+- If no LaTeX engine is available, report the missing dependency and preserve `debug/tailored_resume.tex`.
