@@ -65,10 +65,7 @@
 
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
-
-% Use default LaTeX font (Computer Modern Sans) instead of raleway
-% Uncomment below if you have raleway installed:
-% \usepackage[default]{raleway}
+\usepackage[sfdefault]{noto} % Portable Noto Sans fonts for consistent multilingual Latin text
 
 \renewcommand*\familydefault{\sfdefault} % Force the sans-serif version of any font used
 

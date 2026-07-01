@@ -2,7 +2,7 @@
 """
 Cross-platform resume renderer for Career Weaver.
 
-Input JSON -> Jinja2 LaTeX template -> PDF via pdflatex or Tectonic.
+Input JSON -> Jinja2 LaTeX template -> PDF via Tectonic or pdflatex.
 The script validates the resume data contract and keeps generated files in:
   <job-output>/deliverables/  # user-facing files
   <job-output>/debug/         # rendered TeX and LaTeX build artifacts
@@ -309,7 +309,7 @@ def resume_pdf_name(data: dict[str, Any], output_dir: Path) -> str:
 def compile_pdf(tex_file: Path, debug_path: Path, engine: str) -> None:
     selected_engine = engine
     if selected_engine == "auto":
-        selected_engine = "pdflatex" if shutil.which("pdflatex") else "tectonic"
+        selected_engine = "tectonic" if shutil.which("tectonic") else "pdflatex"
 
     if selected_engine == "pdflatex":
         pdflatex = shutil.which("pdflatex")
@@ -416,7 +416,7 @@ def parse_args() -> argparse.Namespace:
         "--engine",
         choices=("auto", "pdflatex", "tectonic"),
         default="auto",
-        help="LaTeX engine. Defaults to auto, preferring pdflatex and falling back to tectonic.",
+        help="LaTeX engine. Defaults to auto, preferring tectonic and falling back to pdflatex.",
     )
     return parser.parse_args()
 

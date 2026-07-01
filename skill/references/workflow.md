@@ -283,5 +283,5 @@ Open:
 
 - Use Python scripts for setup and rendering instead of shell-specific loops.
 - Avoid POSIX-only commands in reusable instructions.
-- Use `scripts/render_resume.py --engine auto` by default so the renderer can choose `pdflatex` or Tectonic.
+- Use `scripts/render_resume.py --engine auto` by default so the renderer prefers Tectonic and falls back to `pdflatex`.
 - If no LaTeX engine is available, report the missing dependency and preserve `debug/tailored_resume.tex`.
