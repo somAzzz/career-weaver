@@ -60,7 +60,23 @@ What should I generate?
 
 Default to option 4 when the user says "full pipeline", "apply to this job", or "analyze and generate".
 
-### Step 5: Photo Choice
+### Step 5: Run Scope And Reuse Choice
+
+Ask before generating when prior job outputs, JDs, match reports, resume JSON files, or helper scripts exist and the user's intended scope is not explicit:
+
+```text
+How should I use existing materials?
+1. New JD / new tailored resume
+2. Reuse an existing JD and regenerate from profile + JD
+3. Reuse existing match strategy / resume data
+4. Generic resume without JD tailoring
+```
+
+Do not silently copy old `match_report.md`, old `debug/resume_data.json`, or run historical helper scripts such as `work/build_*.py`. Existing artifacts are inputs only when the user explicitly chooses reuse.
+
+For a new JD, always create or refresh `match_report.md` and `debug/resume_data.json` from `profile.yaml` + the selected JD. For a generic resume, skip `match_report.md`, use `general_resume`, and state that no JD tailoring was performed.
+
+### Step 6: Photo Choice
 
 Ask before rendering any resume PDF unless the user already made an explicit photo/no-photo choice in the current request. This happens before final template selection so the agent cannot silently choose a no-photo template to avoid the question.
 
@@ -75,7 +91,7 @@ Photo option?
 If the user chooses a photo option, use a photo-capable template such as `luxsleek`, `engineer_with_photo`, or a custom template that renders `photo.filename`.
 Default to no-photo for US roles only after the user answers or explicitly asks Codex to choose defaults.
 
-### Step 6: Language Choice
+### Step 7: Language Choice
 
 Ask only if the target resume language is unclear:
 
@@ -89,7 +105,7 @@ Ask only if the target resume language is unclear:
 
 Default to the JD language when it is obvious. Keep interacting with the user in Chinese when the user uses Chinese, even if the resume output is German, French, or English. See `references/localization.md`.
 
-### Step 7: Template Choice
+### Step 8: Template Choice
 
 Ask before rendering any resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults. List available templates first:
 
@@ -108,7 +124,21 @@ Which resume template should I use?
 
 If `list-templates` shows different templates, use that list instead. Do not silently use the default `engineer` template.
 
-### Step 8: Finish
+### Step 9: Version Matrix
+
+Ask before generating multiple PDFs unless the requested matrix is explicit:
+
+```text
+Which versions should I generate?
+1. One template, no photo
+2. One template, with photo
+3. Both photo and no-photo for one template
+4. Custom matrix, e.g. engineer no-photo + luxsleek with-photo
+```
+
+Do not infer a multi-version matrix from prior outputs. If separate output directories are needed, create them only after the user confirms the exact versions.
+
+### Step 10: Finish
 
 Generate the selected artifacts. In the final reply, list only files in `deliverables/` plus any blockers or review notes that matter.
 
@@ -141,16 +171,19 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 
 1. Read the profile.
 2. If no JD is available, ask for a JD unless the user explicitly requested a generic resume, sample render, or template preview.
-3. For JD-targeted resumes, read the JD and match report if present. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
-4. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
-5. Select the strongest relevant facts from the profile.
-6. Generate a factual summary.
-7. Create `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md`.
-8. If the target resume language is not English, apply `references/localization.md`.
-9. Ask the photo choice before rendering if the user has not already made an explicit photo/no-photo decision. Do this before final template selection.
-10. Ask the template choice before rendering if the user has not already selected a template. Do not silently default to `engineer`.
-11. Use city/region-level `contact.display_location` for the rendered resume; do not put full street addresses in compact template headers unless the user explicitly asks.
-12. Render:
+3. If prior job outputs or helper scripts exist and the user has not chosen reuse, ask the Run Scope And Reuse Choice question. Do not copy old `match_report.md` or `resume_data.json` by default.
+4. For JD-targeted resumes, read the selected JD. Generate or refresh `match_report.md` from the current `profile.yaml` + JD unless the user explicitly chose to reuse an existing strategy.
+5. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
+6. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
+7. Select the strongest relevant facts from the profile.
+8. Generate a factual summary.
+9. Create a fresh `output/{person}/jobs/{job}/debug/resume_data.json` using `references/resume_schema.md` unless the user explicitly chose to reuse existing resume data.
+10. If the target resume language is not English, apply `references/localization.md`.
+11. Ask the photo choice before rendering if the user has not already made an explicit photo/no-photo decision. Do this before final template selection.
+12. Ask the template choice before rendering if the user has not already selected a template. Do not silently default to `engineer`.
+13. If multiple PDFs are requested, ask for the exact version matrix unless already explicit.
+14. Use city/region-level `contact.display_location` for the rendered resume; do not put full street addresses in compact template headers unless the user explicitly asks.
+15. Render:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job}
@@ -201,6 +234,7 @@ deliverables/interview_prep.md
 - `match_report.md` determines resume strategy.
 - `debug/resume_data.json` should implement that strategy without inventing facts.
 - `interview_prep.md` should inherit final resume claims and match report gaps.
+- Prior outputs are not the source of truth for a new run. Treat them as reusable only after explicit user confirmation.
 
 ## Output Layout
 

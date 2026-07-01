@@ -60,11 +60,18 @@ Prefer template names in user-facing instructions. Paths are useful for debuggin
 
 Before rendering any resume PDF, ask which template to use unless the user already specified one. Do not silently default to `engineer`.
 
+When generating multiple PDFs, ask for the exact version matrix before rendering. Do not infer versions from old output directories. Examples:
+
+- `engineer` no-photo only
+- `luxsleek` with-photo only
+- both photo and no-photo for `luxsleek`
+- `engineer` no-photo + `luxsleek` with-photo
+
 ## Selection Guidance
 
 - `engineer`: default compact technical resume.
 - `engineer_with_photo`: technical resume with a photo block.
-- `luxsleek`: polished two-column sidebar CV with compact experience entries, useful when the user wants a more designed CV.
+- `luxsleek`: polished sidebar CV with compact experience entries. The sidebar is for identity/contact/language details and concise skills; summary renders in the main flow so long profile text can paginate.
 
 ## Photo-Capable Templates
 
@@ -78,3 +85,5 @@ Bundled photo-capable templates:
 Before rendering any resume PDF, ask whether the user has a photo or wants a no-photo version. Ask before final template selection so the agent cannot silently choose a no-photo template to avoid the question. Do not silently default unless the user explicitly asks Codex to choose defaults.
 
 For markets or roles where photos are uncommon, recommend a no-photo version after asking.
+
+Do not put long summaries or dense project content in a fixed sidebar. LuxSleek keeps skills in the sidebar, so keep sidebar skills concise; overflow-prone content belongs in the main paginating flow.

@@ -61,9 +61,6 @@
 \vspace*{0.5ex}
 \BLOCK{endif}
 
-\headleft{\VAR{labels.summary | default('Profile') | latex_escape}}
-\VAR{summary | latex_escape}
-
 \headleft{\VAR{labels.contact | default('Contact details') | latex_escape}}
 \small
 \MVAt\ {\small \VAR{contact.email | latex_escape}} \\[0.4ex]
@@ -101,6 +98,9 @@
 }
 
 \setlength{\parskip}{0.8ex}
+
+\headright{\VAR{labels.summary | default('Profile') | latex_escape}}
+\VAR{summary | latex_escape}
 
 \BLOCK{if experience}
 \headright{\VAR{labels.experience | default('Experience') | latex_escape}}

@@ -81,4 +81,4 @@ Create `output/{person}/jobs/{job}/debug/resume_data.json` as plain JSON. Do not
 - Keep bullets concise and evidence-backed. Prefer 2-5 bullets per role.
 - Use `date` consistently; templates render it exactly as provided.
 - Use `photo.filename` only when the selected template includes a photo.
-- The LuxSleek template (`assets/templates/luxsleek/luxsleek.tex.jinja2`) uses a left sidebar for summary, contact, languages, and skills; it can also render `certifications`, `hobbies`, and `photo.filename`.
+- The LuxSleek template (`assets/templates/luxsleek/luxsleek.tex.jinja2`) uses a left sidebar for identity, photo, contact, languages, and a concise skills list. Summary renders in the main flow so long profile text can paginate. It can also render `certifications`, `hobbies`, and `photo.filename`.
