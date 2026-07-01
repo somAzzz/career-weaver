@@ -97,6 +97,12 @@ Add a custom resume template:
 python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
 ```
 
+## Resume Template Library
+
+Browse more LaTeX CV designs here:
+
+**[Overleaf CV Templates](https://cn.overleaf.com/latex/templates/tagged/cv)**
+
 Use example data by copying it into runtime `data/`:
 
 ```bash
@@ -222,6 +228,12 @@ python skill/scripts/setup_workflow.py list-templates
 ```bash
 python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
 ```
+
+## 简历模板库
+
+可以在这里浏览更多 LaTeX 简历设计：
+
+**[Overleaf CV 简历模板库](https://cn.overleaf.com/latex/templates/tagged/cv)**
 
 复制示例数据到运行时 `data/`：
 
