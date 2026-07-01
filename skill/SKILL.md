@@ -29,6 +29,7 @@ Use a deterministic question funnel when the user's request is underspecified. A
    - If no profile exists, ask the user to paste a resume or provide a file path.
    - If multiple profiles exist, ask which one to use.
 2. **Resume Import**: If profile data is missing or stale, import/update `profile.yaml`.
+   - If a profile already exists, do not ask the user to upload a profile again. Ask whether they want to update the existing profile.
    - Do not ask the user about YAML.
    - Ask only about facts that affect truthfulness, such as missing dates, unclear employers, or ambiguous metrics.
 3. **Job Description**: Save the JD.

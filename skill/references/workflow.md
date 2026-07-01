@@ -25,12 +25,14 @@ Goal: select or create `data/{person}/profile.yaml`.
 - If exactly one `data/*/profile.yaml` exists, use it without asking.
 - If multiple profiles exist, ask: "Which profile should I use?"
 - If no profile exists, ask: "Please paste your resume text or provide a resume file path."
+- If a profile already exists and the request suggests importing or refreshing career facts, ask: "I found an existing profile. Do you want to update it with new resume/profile material?"
 
 ### Step 2: Resume Import
 
 Goal: produce a usable master profile.
 
 - If the user pasted resume text or provided a resume file, follow `references/importing.md`.
+- If a usable profile already exists and the user has not provided new resume/profile material, ask whether they want to update it instead of asking them to upload it again.
 - If extraction leaves important uncertainty, ask one concise clarification question.
 - If the uncertainty is not blocking, write it to `review_notes` and continue.
 

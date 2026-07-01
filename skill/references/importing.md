@@ -31,7 +31,8 @@ Rules:
 
 - Do not infer missing dates, metrics, team sizes, tools, degrees, or certifications.
 - Preserve uncertainty in `review_notes`.
-- If an existing profile exists, merge carefully and do not delete facts unless the user asks.
+- If an existing profile exists, ask whether the user wants to update it instead of asking them to upload a profile again.
+- When updating an existing profile, merge carefully and do not delete facts unless the user asks.
 - If the user provides a PDF or DOCX and the local environment cannot extract it, ask for pasted text or a text export.
 
 ## JD Import
