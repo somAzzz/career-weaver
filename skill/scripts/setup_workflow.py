@@ -22,6 +22,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+TEMPLATES_ROOT = ROOT / "assets" / "templates"
 DEFAULT_WORKSPACE = Path.cwd()
 
 
@@ -41,6 +42,20 @@ def slugify(value: str) -> str:
     text = value.strip().lower()
     text = re.sub(r"[^a-z0-9]+", "_", text)
     return text.strip("_") or "untitled"
+
+
+def discover_templates() -> dict[str, Path]:
+    templates: dict[str, Path] = {}
+    if not TEMPLATES_ROOT.exists():
+        return templates
+
+    for template_path in sorted(TEMPLATES_ROOT.glob("*/*.tex.jinja2")):
+        if template_path.parent.name == "common":
+            continue
+        name = template_path.stem.removesuffix(".tex")
+        templates.setdefault(name, template_path)
+        templates.setdefault(template_path.parent.name, template_path)
+    return templates
 
 
 def person_slug(name: str) -> str:
@@ -162,6 +177,47 @@ def command_init_job(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_list_templates(args: argparse.Namespace) -> int:
+    templates = discover_templates()
+    if not templates:
+        print("No templates found.")
+        return 0
+
+    seen: set[Path] = set()
+    for name in sorted(templates):
+        template_path = templates[name]
+        if template_path in seen and name != template_path.parent.name:
+            continue
+        seen.add(template_path)
+        print(f"{name}: {template_path.relative_to(ROOT)}")
+    return 0
+
+
+def command_add_template(args: argparse.Namespace) -> int:
+    source = Path(args.file)
+    if not source.exists():
+        print(f"ERROR: template file not found: {source}", file=sys.stderr)
+        return 1
+    if source.suffixes[-2:] != [".tex", ".jinja2"]:
+        print("ERROR: template file must end with .tex.jinja2", file=sys.stderr)
+        return 1
+
+    name = slugify(args.name or source.name.removesuffix(".tex.jinja2"))
+    template_dir = TEMPLATES_ROOT / name
+    template_dir.mkdir(parents=True, exist_ok=True)
+    destination = template_dir / f"{name}.tex.jinja2"
+
+    if destination.exists() and not args.force:
+        print(f"EXISTS: {destination}")
+        print("Use --force to replace it.")
+        return 1
+
+    shutil.copy2(source, destination)
+    print(f"TEMPLATE: {destination}")
+    print(f"Use with: --template {name}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Set up Career Weaver input and output files.")
     parser.add_argument(
@@ -193,6 +249,15 @@ def build_parser() -> argparse.ArgumentParser:
     init_job.add_argument("--person", required=True, help="Person name or slug.")
     init_job.add_argument("--job", required=True, help="Job title or slug.")
     init_job.set_defaults(func=command_init_job)
+
+    list_templates = subparsers.add_parser("list-templates", help="List available resume templates.")
+    list_templates.set_defaults(func=command_list_templates)
+
+    add_template = subparsers.add_parser("add-template", help="Copy a .tex.jinja2 resume template into the skill.")
+    add_template.add_argument("--name", help="Template name. Defaults to the source filename.")
+    add_template.add_argument("--file", required=True, help="Path to a .tex.jinja2 template file.")
+    add_template.add_argument("--force", action="store_true", help="Overwrite an existing template with the same name.")
+    add_template.set_defaults(func=command_add_template)
 
     return parser
 

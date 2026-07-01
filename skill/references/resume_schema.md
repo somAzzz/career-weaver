@@ -51,9 +51,18 @@ Create `output/{person}/jobs/{job}/debug/resume_data.json` as plain JSON. Do not
       "thesis": "Optional thesis"
     }
   ],
+  "certifications": [
+    {
+      "name": "Certification",
+      "issuer": "Issuer",
+      "date": "2024",
+      "description": "Optional focus"
+    }
+  ],
   "languages": [
     {"name": "English", "level": "Fluent"}
   ],
+  "hobbies": "Optional short personal-interest line for templates that support it.",
   "photo": {
     "filename": "profile_photo.jpeg"
   }
@@ -63,10 +72,11 @@ Create `output/{person}/jobs/{job}/debug/resume_data.json` as plain JSON. Do not
 ## Rules
 
 - Required: `name`, `role`, `contact.email`, `contact.location`, `summary`, non-empty `skills`, non-empty `experience`, and `education`.
-- Optional: `contact.phone`, `github`, `linkedin`, `projects`, `research`, `languages`, `photo`.
+- Optional: `contact.phone`, `github`, `linkedin`, `projects`, `research`, `certifications`, `languages`, `hobbies`, `photo`.
 - Optional but recommended for multilingual output: `target_language` and `labels`.
 - Generate this JSON from verified `profile.yaml` facts and the target JD. Do not use JD-only claims as resume facts.
 - If the target language is not English, translate resume-facing text and localize `labels`; preserve company names, product names, metrics, and technologies.
 - Keep bullets concise and evidence-backed. Prefer 2-5 bullets per role.
 - Use `date` consistently; templates render it exactly as provided.
 - Use `photo.filename` only when the selected template includes a photo.
+- The LuxSleek template (`assets/templates/luxsleek/luxsleek.tex.jinja2`) uses a left sidebar for summary, contact, languages, and skills; it can also render `certifications`, `hobbies`, and `photo.filename`.

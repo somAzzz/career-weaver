@@ -51,7 +51,7 @@ output/               # local generated files, ignored for new files
 
 - Python 3.12+
 - `jinja2` and `pyyaml`
-- `pdflatex` from TeX Live, MacTeX, BasicTeX, or MiKTeX
+- `pdflatex` from TeX Live/MacTeX/BasicTeX/MiKTeX, or Tectonic
 
 Install Python dependencies:
 
@@ -77,6 +77,24 @@ Render an existing generated resume:
 
 ```bash
 python skill/scripts/render_resume.py --output output/alex_chen/jobs/senior_backend_engineer
+```
+
+Render with the LuxSleek two-column template:
+
+```bash
+python skill/scripts/render_resume.py --output output/alex_chen/jobs/senior_backend_engineer --template luxsleek
+```
+
+List available resume templates:
+
+```bash
+python skill/scripts/setup_workflow.py list-templates
+```
+
+Add a custom resume template:
+
+```bash
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
 ```
 
 Use example data by copying it into runtime `data/`:
@@ -159,7 +177,7 @@ output/               # 本地生成结果，新文件默认忽略
 
 - Python 3.12+
 - `jinja2` 和 `pyyaml`
-- 来自 TeX Live、MacTeX、BasicTeX 或 MiKTeX 的 `pdflatex`
+- 来自 TeX Live、MacTeX、BasicTeX 或 MiKTeX 的 `pdflatex`，或 Tectonic
 
 安装 Python 依赖：
 
@@ -185,6 +203,24 @@ python skill/scripts/setup_workflow.py add-photo --person "Alex Chen" --file hea
 
 ```bash
 python skill/scripts/render_resume.py --output output/alex_chen/jobs/senior_backend_engineer
+```
+
+使用 LuxSleek 双栏模板渲染：
+
+```bash
+python skill/scripts/render_resume.py --output output/alex_chen/jobs/senior_backend_engineer --template luxsleek
+```
+
+列出可用简历模板：
+
+```bash
+python skill/scripts/setup_workflow.py list-templates
+```
+
+添加自定义简历模板：
+
+```bash
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
 ```
 
 复制示例数据到运行时 `data/`：

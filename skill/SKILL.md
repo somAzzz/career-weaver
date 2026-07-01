@@ -15,10 +15,12 @@ When the user says one of these, perform the matching workflow:
 - "Here is a JD" / "Analyze this job": save the JD to `data/{person}/jds/{job}.txt`, create the job folder, and write `deliverables/match_report.md`.
 - "Generate my resume": create `debug/resume_data.json`, render the PDF, and put the final PDF in `deliverables/`.
 - "Use this photo": copy the image into `data/{person}/` and generate a photo resume when requested.
+- "Add this resume template" / "Use this template": add, list, or select templates using `references/templates.md`.
 - "Prepare me for the interview": write question-only interview prep to `deliverables/interview_prep.md`.
 - "Generate a German/French/English resume": translate and localize the generated resume into the target language while preserving verified facts.
 
 Read `references/workflow.md` for the full flow. Read `references/importing.md` when importing raw resumes, JDs, or photos. Read `references/localization.md` when the profile language and target resume language differ.
+Read `references/templates.md` when adding, listing, choosing, or previewing resume templates.
 
 ## Conversation Flow
 
@@ -48,7 +50,10 @@ Use a deterministic question funnel when the user's request is underspecified. A
 6. **Language Choice**: Ask only if the target resume language is unclear.
    - Default to the JD language when obvious.
    - If the user speaks Chinese but the JD is German, interact in Chinese and generate the resume in German.
-7. **Generate**: Run the selected workflow and show only the key `deliverables/` paths.
+7. **Template Choice**: Ask only if the user requests template selection or multiple templates are equally appropriate.
+   - List templates with `python scripts/setup_workflow.py list-templates`.
+   - Render with a template name such as `--template luxsleek`.
+8. **Generate**: Run the selected workflow and show only the key `deliverables/` paths.
 
 Do not expose internal paths, debug files, schema details, or LaTeX details unless the user asks or there is a blocker.
 
@@ -85,6 +90,12 @@ Render with:
 python scripts/render_resume.py --output output/{person}/jobs/{job}
 ```
 
+Use a specific template when requested:
+
+```bash
+python scripts/render_resume.py --output output/{person}/jobs/{job} --template luxsleek
+```
+
 Use `python` on every platform. If Python 3 is exposed only as `python3`, use `python3`.
 
 ## Non-Negotiables
@@ -98,18 +109,21 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.
 - Keep paths relative and use forward slashes in docs so instructions stay portable across Windows, macOS, and Linux.
+- Choose `assets/templates/luxsleek/luxsleek.tex.jinja2` when the user wants a polished two-column sidebar CV with compact right-column experience entries.
 
 ## Bundled Resources
 
 - `scripts/setup_workflow.py`: Saves JDs, copies photos, and initializes job folders.
-- `scripts/render_resume.py`: Validates resume JSON, renders LaTeX, copies template resources/photos, and runs `pdflatex`.
+- `scripts/render_resume.py`: Validates resume JSON, resolves template names, renders LaTeX, copies template resources/photos, and runs a LaTeX engine.
 - `references/workflow.md`: End-to-end user flows.
 - `references/importing.md`: Resume/JD/photo import rules.
 - `references/localization.md`: Target-language and multilingual resume rules.
 - `references/resume_schema.md`: JSON contract for rendered resumes.
 - `references/report_schema.md`: Match report format.
 - `references/interview_prep.md`: Interview question generation rules.
+- `references/templates.md`: Adding, listing, choosing, and previewing resume templates.
 - `assets/templates/engineer/`: Default LaTeX templates.
+- `assets/templates/luxsleek/`: Two-column sidebar LaTeX template based on LuxSleek-CV.
 
 ## Dependencies
 
@@ -121,8 +135,8 @@ python -m pip install jinja2 pyyaml
 
 PDF engine:
 
-- Windows: install MiKTeX or TeX Live and ensure `pdflatex` is on `PATH`.
-- macOS: install MacTeX or BasicTeX and ensure `pdflatex` is on `PATH`.
-- Linux: install TeX Live packages that include `pdflatex`, fonts, and common LaTeX extras.
+- Windows: install MiKTeX, TeX Live, or Tectonic and ensure the engine is on `PATH`.
+- macOS: install MacTeX, BasicTeX, or Tectonic and ensure the engine is on `PATH`.
+- Linux: install TeX Live packages that include `pdflatex`, or install Tectonic.
 
-If `pdflatex` is unavailable, still generate and inspect `debug/tailored_resume.tex`; PDF compilation can happen later.
+If no LaTeX engine is available, still generate and inspect `debug/tailored_resume.tex`; PDF compilation can happen later.

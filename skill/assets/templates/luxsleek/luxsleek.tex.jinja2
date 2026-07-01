@@ -1,0 +1,200 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage[left = 0mm, right = 0mm, top = 0mm, bottom = 0mm]{geometry}
+\usepackage[stretch = 25, shrink = 25]{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{marvosym}
+\usepackage{enumitem}
+\setlist{parsep = 0pt, topsep = 0pt, partopsep = 1pt, itemsep = 1pt, leftmargin = 6mm}
+
+\usepackage{FiraSans}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{cvblue}{HTML}{304263}
+
+\newcommand{\dates}[1]{\hfill\mbox{\textbf{#1}}}
+\newcommand{\is}{\par\vskip.5ex plus .4ex}
+\newcommand{\smaller}[1]{{\small$\diamond$\ #1}}
+\newcommand{\headleft}[1]{\vspace*{3ex}\textsc{\textbf{#1}}\par%
+    \vspace*{-1.5ex}\hrulefill\par\vspace*{0.7ex}}
+\newcommand{\headright}[1]{\vspace*{2.5ex}\textsc{\Large\color{cvblue}#1}\par%
+     \vspace*{-2ex}{\color{cvblue}\hrulefill}\par}
+
+\usepackage[colorlinks = true, urlcolor = white, linkcolor = white]{hyperref}
+
+\begin{document}
+
+\pagecolor{white}
+\color{black}
+\setlength{\topskip}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\fboxsep}{0pt}
+\pagestyle{empty}
+\raggedbottom
+
+\begin{minipage}[t]{0.33\textwidth}
+\colorbox{cvblue}{\begin{minipage}[t][5mm][t]{\textwidth}\null\hfill\null\end{minipage}}
+
+\vspace{-.2ex}
+\colorbox{cvblue!90}{\color{white}
+\kern0.09\textwidth\relax
+\begin{minipage}[t][293mm][t]{0.82\textwidth}
+\raggedright
+\vspace*{2.5ex}
+
+{\Large \VAR{name | latex_escape}}\par
+\vspace{0.6ex}
+{\normalsize \VAR{role | latex_escape}}
+
+\BLOCK{if photo and photo.filename}
+\vspace*{1.2ex}
+\null\hfill\includegraphics[width=0.65\textwidth]{\VAR{photo.filename}}\hfill\null
+\vspace*{0.5ex}
+\BLOCK{endif}
+
+\headleft{\VAR{labels.summary | default('Profile') | latex_escape}}
+\VAR{summary | latex_escape}
+
+\headleft{\VAR{labels.contact | default('Contact details') | latex_escape}}
+\small
+\MVAt\ {\small \VAR{contact.email | latex_escape}} \\[0.4ex]
+\BLOCK{if contact.phone}
+\Mobilefone\ \VAR{contact.phone | latex_escape} \\[0.5ex]
+\BLOCK{endif}
+\BLOCK{if contact.github}
+\Mundus\ \href{\VAR{contact.github}}{\VAR{contact.github | display_url | latex_escape}} \\[0.1ex]
+\BLOCK{endif}
+\BLOCK{if contact.linkedin}
+\Mundus\ \href{\VAR{contact.linkedin}}{\VAR{contact.linkedin | display_url | latex_escape}} \\[0.1ex]
+\BLOCK{endif}
+\Letter\ \VAR{contact.location | latex_escape}
+\normalsize
+
+\BLOCK{if languages}
+\headleft{\VAR{labels.languages | default('Languages') | latex_escape}}
+\small
+\BLOCK{for lang in languages}
+\textbf{\VAR{lang.name | latex_escape}}~(\VAR{lang.level | latex_escape})\BLOCK{if not loop.last}, \BLOCK{endif}
+\BLOCK{endfor}
+\normalsize
+\BLOCK{endif}
+
+\headleft{\VAR{labels.skills | default('Skills') | latex_escape}}
+\begin{itemize}
+\BLOCK{for category, items in skills.items()}
+\item \textbf{\VAR{category | latex_escape}:} \VAR{items | map('latex_escape') | join(', ')}
+\BLOCK{endfor}
+\end{itemize}
+
+\end{minipage}%
+\kern0.09\textwidth\relax
+}
+\end{minipage}
+\hskip2.5em
+\begin{minipage}[t]{0.56\textwidth}
+\setlength{\parskip}{0.8ex}
+
+\vspace{2ex}
+
+\BLOCK{if experience}
+\headright{\VAR{labels.experience | default('Experience') | latex_escape}}
+
+\BLOCK{for exp in experience}
+\textsc{\VAR{exp.role | latex_escape}} at \textit{\VAR{exp.company | latex_escape}.} \dates{\VAR{exp.date | latex_escape}} \\
+\BLOCK{if exp.description}
+\smaller{\VAR{exp.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{for bullet in exp.bullets}
+\smaller{\VAR{bullet | latex_escape}}\par
+\BLOCK{endfor}
+\BLOCK{if exp.tags}
+\smaller{\texttt{\VAR{exp.tags | map('latex_escape') | join(' / ')}}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\is
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if projects}
+\headright{\VAR{labels.projects | default('Projects') | latex_escape}}
+
+\BLOCK{for project in projects}
+\textsc{\VAR{project.title | latex_escape}} at \textit{\VAR{project.company | latex_escape}.} \dates{\VAR{project.date | latex_escape}} \\
+\BLOCK{if project.description}
+\smaller{\VAR{project.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{for bullet in project.bullets}
+\smaller{\VAR{bullet | latex_escape}}\par
+\BLOCK{endfor}
+\BLOCK{if project.tags}
+\smaller{\texttt{\VAR{project.tags | map('latex_escape') | join(' / ')}}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\is
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if research}
+\headright{\VAR{labels.research | default('Research Projects') | latex_escape}}
+
+\BLOCK{for research_item in research}
+\textsc{\VAR{research_item.title | latex_escape}} at \textit{\VAR{research_item.company | latex_escape}.} \dates{\VAR{research_item.date | latex_escape}} \\
+\BLOCK{if research_item.description}
+\smaller{\VAR{research_item.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{for bullet in research_item.bullets}
+\smaller{\VAR{bullet | latex_escape}}\par
+\BLOCK{endfor}
+\BLOCK{if not loop.last}
+\is
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if education}
+\headright{\VAR{labels.education | default('Education') | latex_escape}}
+
+\BLOCK{for edu in education}
+\textsc{\VAR{edu.degree | latex_escape}.}
+\BLOCK{if edu.major}
+\VAR{edu.major | latex_escape}.
+\BLOCK{endif}
+\textit{\VAR{edu.school | latex_escape}.} \dates{\VAR{edu.date | latex_escape}} \\
+\BLOCK{if edu.thesis}
+\smaller{\textbf{Thesis:} \VAR{edu.thesis | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\is
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if certifications}
+\headright{\VAR{labels.certifications | default('Certifications') | latex_escape}}
+
+\BLOCK{for cert in certifications}
+\textsc{\VAR{cert.name | latex_escape}}\BLOCK{if cert.issuer} \textit{\VAR{cert.issuer | latex_escape}.}\BLOCK{endif}\BLOCK{if cert.date} \dates{\VAR{cert.date | latex_escape}}\BLOCK{endif}
+\BLOCK{if cert.description}
+\\ \smaller{\VAR{cert.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\is
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if hobbies}
+\headright{\VAR{labels.hobbies | default('Hobbies') | latex_escape}}
+\VAR{hobbies | latex_escape}
+\BLOCK{endif}
+
+\end{minipage}
+
+\end{document}

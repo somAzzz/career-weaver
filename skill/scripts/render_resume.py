@@ -2,7 +2,7 @@
 """
 Cross-platform resume renderer for Career Weaver.
 
-Input JSON -> Jinja2 LaTeX template -> PDF via pdflatex.
+Input JSON -> Jinja2 LaTeX template -> PDF via pdflatex or Tectonic.
 The script validates the resume data contract and keeps generated files in:
   <job-output>/deliverables/  # user-facing files
   <job-output>/debug/         # rendered TeX and LaTeX build artifacts
@@ -23,10 +23,10 @@ from jinja2 import Environment, FileSystemLoader
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_TEMPLATE = ROOT / "assets" / "templates" / "engineer" / "engineer.tex.jinja2"
+TEMPLATES_ROOT = ROOT / "assets" / "templates"
 DEFAULT_OUTPUT = Path("output")
 DEFAULT_DATA = Path("debug") / "resume_data.json"
-PDFLATEX_TIMEOUT_SECONDS = 120
+LATEX_TIMEOUT_SECONDS = 120
 
 LATEX_SPECIALS = {
     "%": r"\%",
@@ -71,6 +71,41 @@ def latex_escape(value: Any) -> str:
 def display_url(url: str) -> str:
     """Convert a profile URL to compact display text."""
     return re.sub(r"^https?://(www\.)?", "", url).rstrip("/")
+
+
+def discover_templates() -> dict[str, Path]:
+    """Return bundled/custom templates by stable name."""
+    templates: dict[str, Path] = {}
+    if not TEMPLATES_ROOT.exists():
+        return templates
+
+    for template_path in sorted(TEMPLATES_ROOT.glob("*/*.tex.jinja2")):
+        if template_path.parent.name == "common":
+            continue
+        name = template_path.stem.removesuffix(".tex")
+        templates.setdefault(name, template_path)
+        templates.setdefault(template_path.parent.name, template_path)
+    return templates
+
+
+def resolve_template_path(template_arg: str) -> Path:
+    """Resolve a template name, relative path, or absolute path."""
+    templates = discover_templates()
+    if template_arg in templates:
+        return templates[template_arg]
+
+    template_path = Path(template_arg)
+    candidates = [
+        template_path,
+        ROOT / template_path,
+        TEMPLATES_ROOT / template_path,
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    available = ", ".join(sorted(templates)) or "none"
+    raise FileNotFoundError(f"Template not found: {template_arg}. Available templates: {available}")
 
 
 def require_mapping(data: dict[str, Any], key: str, path: str) -> dict[str, Any]:
@@ -214,7 +249,9 @@ def copy_photo(data: dict[str, Any], data_path: Path, build_path: Path) -> None:
     ]
     for candidate in candidates:
         if candidate.exists():
-            shutil.copy2(candidate, build_path / candidate.name)
+            destination = build_path / candidate.name
+            if candidate.resolve() != destination.resolve():
+                shutil.copy2(candidate, destination)
             return
     print(f"Warning: photo file not found: {photo_name}", file=sys.stderr)
 
@@ -225,7 +262,52 @@ def resume_pdf_name(data: dict[str, Any], output_dir: Path) -> str:
     return f"{person}_{job}_resume.pdf"
 
 
-def render(data_file: Path, template_file: Path, output_dir: Path) -> Path:
+def compile_pdf(tex_file: Path, debug_path: Path, engine: str) -> None:
+    selected_engine = engine
+    if selected_engine == "auto":
+        selected_engine = "pdflatex" if shutil.which("pdflatex") else "tectonic"
+
+    if selected_engine == "pdflatex":
+        pdflatex = shutil.which("pdflatex")
+        if not pdflatex:
+            raise RuntimeError("pdflatex not found. Install TeX Live, MacTeX, or MiKTeX.")
+        result = subprocess.run(
+            [
+                pdflatex,
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "-output-directory",
+                str(debug_path.resolve()),
+                str(tex_file.resolve()),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=LATEX_TIMEOUT_SECONDS,
+        )
+    elif selected_engine == "tectonic":
+        tectonic = shutil.which("tectonic")
+        if not tectonic:
+            raise RuntimeError("tectonic not found. Install Tectonic or use --engine pdflatex.")
+        result = subprocess.run(
+            [tectonic, tex_file.name],
+            cwd=debug_path,
+            capture_output=True,
+            text=True,
+            timeout=LATEX_TIMEOUT_SECONDS,
+        )
+    else:
+        raise RuntimeError(f"Unsupported LaTeX engine: {engine}")
+
+    build_pdf = debug_path / "tailored_resume.pdf"
+    if result.returncode != 0 or not build_pdf.exists():
+        log_file = debug_path / "tailored_resume.log"
+        details = result.stderr or result.stdout[-2000:]
+        if log_file.exists():
+            details = log_file.read_text(encoding="utf-8", errors="replace")[-2000:]
+        raise RuntimeError(f"PDF compilation failed with {selected_engine}. Check {log_file}\n\n{details}")
+
+
+def render(data_file: Path, template_file: Path, output_dir: Path, engine: str = "auto") -> Path:
     base_path = output_dir
     deliverables_path = base_path / "deliverables"
     debug_path = base_path / "debug"
@@ -244,31 +326,8 @@ def render(data_file: Path, template_file: Path, output_dir: Path) -> Path:
     copy_template_resources(template_file, debug_path)
     copy_photo(data, data_file, debug_path)
 
-    pdflatex = shutil.which("pdflatex")
-    if not pdflatex:
-        raise RuntimeError("pdflatex not found. Install TeX Live, MacTeX, or MiKTeX.")
-
-    result = subprocess.run(
-        [
-            pdflatex,
-            "-interaction=nonstopmode",
-            "-halt-on-error",
-            "-output-directory",
-            str(debug_path.resolve()),
-            str(tex_file.resolve()),
-        ],
-        capture_output=True,
-        text=True,
-        timeout=PDFLATEX_TIMEOUT_SECONDS,
-    )
-
     build_pdf = debug_path / "tailored_resume.pdf"
-    if result.returncode != 0 or not build_pdf.exists():
-        log_file = debug_path / "tailored_resume.log"
-        details = result.stderr or result.stdout[-2000:]
-        if log_file.exists():
-            details = log_file.read_text(encoding="utf-8", errors="replace")[-2000:]
-        raise RuntimeError(f"PDF compilation failed. Check {log_file}\n\n{details}")
+    compile_pdf(tex_file, debug_path, engine)
 
     final_pdf = deliverables_path / resume_pdf_name(data, output_dir)
     shutil.copy2(build_pdf, final_pdf)
@@ -293,14 +352,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--template",
         "-t",
-        default=str(DEFAULT_TEMPLATE),
-        help="Jinja2 LaTeX template path.",
+        default="engineer",
+        help="Template name or Jinja2 LaTeX template path. Use setup_workflow.py list-templates to inspect options.",
     )
     parser.add_argument(
         "--output",
         "-o",
         default=str(DEFAULT_OUTPUT),
         help="Job directory containing deliverables/ and debug/ folders.",
+    )
+    parser.add_argument(
+        "--engine",
+        choices=("auto", "pdflatex", "tectonic"),
+        default="auto",
+        help="LaTeX engine. Defaults to auto, preferring pdflatex and falling back to tectonic.",
     )
     return parser.parse_args()
 
@@ -311,7 +376,7 @@ def main() -> int:
     data_path = resolve_data_path(output_dir, args.data)
 
     try:
-        pdf_path = render(data_path, Path(args.template), output_dir)
+        pdf_path = render(data_path, resolve_template_path(args.template), output_dir, args.engine)
     except (FileNotFoundError, ResumeValidationError, RuntimeError, subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
