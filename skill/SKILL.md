@@ -132,7 +132,7 @@ Use `python` on every platform. If Python 3 is exposed only as `python3`, use `p
 - Save artifacts to files; do not only answer in chat.
 - Put user-facing files in `deliverables/` and build/debug files in `debug/`.
 - Keep paths relative and use forward slashes in docs so instructions stay portable across Windows, macOS, and Linux.
-- Choose `assets/templates/luxsleek/luxsleek.tex.jinja2` when the user wants a polished sidebar CV with compact experience entries. Keep long summary content in the main paginating flow and keep sidebar skills concise.
+- Choose `assets/templates/luxsleek/luxsleek.txt` when the user wants a polished sidebar CV with compact experience entries. Keep long summary content in the main paginating flow and keep sidebar skills concise.
 
 ## Bundled Resources
 

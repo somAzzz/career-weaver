@@ -4,10 +4,10 @@ Use this reference when the user wants to add, list, choose, preview, or render 
 
 ## Template Contract
 
-Templates are Jinja2 LaTeX files stored under:
+Templates are `.txt` files whose contents are rendered by Jinja2 into LaTeX:
 
 ```text
-assets/templates/{template_name}/{template_name}.tex.jinja2
+assets/templates/{template_name}/{template_name}.txt
 ```
 
 Template names should be lowercase slugs, for example:
@@ -21,19 +21,19 @@ Templates should use the resume JSON fields described in `references/resume_sche
 
 ## Add A Template
 
-When the user provides a `.tex.jinja2` template and asks to add it:
+When the user provides a `.txt` template and asks to add it:
 
 ```bash
-python scripts/setup_workflow.py add-template --name "{template_name}" --file path/to/template.tex.jinja2
+python scripts/setup_workflow.py add-template --name "{template_name}" --file path/to/template.txt
 ```
 
 Use `--force` only when the user explicitly wants to replace an existing template.
 
-If the user provides a raw `.tex` file instead of a Jinja2 template:
+If the user provides a raw `.tex` file instead of a `.txt` Jinja2 template:
 
 1. Analyze the static resume structure.
 2. Replace candidate-specific content with `resume_data.json` variables.
-3. Save the converted file as `.tex.jinja2`.
+3. Save the converted file as `.txt`.
 4. Add it with `setup_workflow.py add-template`.
 5. Render a small preview before treating it as ready.
 
@@ -53,7 +53,7 @@ The renderer accepts either a template name or a path:
 
 ```bash
 python scripts/render_resume.py --output output/{person}/jobs/{job} --template luxsleek
-python scripts/render_resume.py --output output/{person}/jobs/{job} --template assets/templates/luxsleek/luxsleek.tex.jinja2
+python scripts/render_resume.py --output output/{person}/jobs/{job} --template assets/templates/luxsleek/luxsleek.txt
 ```
 
 Prefer template names in user-facing instructions. Paths are useful for debugging or one-off templates.

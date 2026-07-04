@@ -100,7 +100,7 @@ python skill/scripts/setup_workflow.py list-templates
 Add a custom resume template:
 
 ```bash
-python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.txt
 ```
 
 ## Resume Template Library
@@ -131,7 +131,7 @@ output/{person}/jobs/{job}/
     tailored_resume.log
     tailored_resume.aux
     tailored_resume.out
-    developercv.cls
+    developercv.cls        # generated from skill/assets/templates/common/developercv.txt
 ```
 
 ## Multilingual Behavior
@@ -238,7 +238,7 @@ python skill/scripts/setup_workflow.py list-templates
 添加自定义简历模板：
 
 ```bash
-python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.txt
 ```
 
 ## 简历模板库
@@ -269,7 +269,7 @@ output/{person}/jobs/{job}/
     tailored_resume.log
     tailored_resume.aux
     tailored_resume.out
-    developercv.cls
+    developercv.cls        # 由 skill/assets/templates/common/developercv.txt 生成
 ```
 
 ## 多语言能力
