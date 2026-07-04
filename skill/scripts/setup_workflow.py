@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES_ROOT = ROOT / "assets" / "templates"
 DEFAULT_WORKSPACE = Path.cwd()
 PLACEHOLDER_VALUES = {"", "todo", "tbd", "unknown", "n/a", "na", "none", "untitled"}
+TEMPLATE_SUFFIX = ".txt"
 
 
 def workspace_path(args: argparse.Namespace) -> Path:
@@ -126,10 +127,10 @@ def discover_templates() -> dict[str, Path]:
     if not TEMPLATES_ROOT.exists():
         return templates
 
-    for template_path in sorted(TEMPLATES_ROOT.glob("*/*.tex.jinja2")):
+    for template_path in sorted(TEMPLATES_ROOT.glob(f"*/*{TEMPLATE_SUFFIX}")):
         if template_path.parent.name == "common":
             continue
-        name = template_path.stem.removesuffix(".tex")
+        name = template_path.stem
         templates.setdefault(name, template_path)
         templates.setdefault(template_path.parent.name, template_path)
     return templates
@@ -300,14 +301,14 @@ def command_add_template(args: argparse.Namespace) -> int:
     if not source.exists():
         print(f"ERROR: template file not found: {source}", file=sys.stderr)
         return 1
-    if source.suffixes[-2:] != [".tex", ".jinja2"]:
-        print("ERROR: template file must end with .tex.jinja2", file=sys.stderr)
+    if source.suffix != TEMPLATE_SUFFIX:
+        print(f"ERROR: template file must end with {TEMPLATE_SUFFIX}", file=sys.stderr)
         return 1
 
-    name = slugify(args.name or source.name.removesuffix(".tex.jinja2"))
+    name = slugify(args.name or source.name.removesuffix(TEMPLATE_SUFFIX))
     template_dir = TEMPLATES_ROOT / name
     template_dir.mkdir(parents=True, exist_ok=True)
-    destination = template_dir / f"{name}.tex.jinja2"
+    destination = template_dir / f"{name}{TEMPLATE_SUFFIX}"
 
     if destination.exists() and not args.force:
         print(f"EXISTS: {destination}")
@@ -362,9 +363,9 @@ def build_parser() -> argparse.ArgumentParser:
     list_templates = subparsers.add_parser("list-templates", help="List available resume templates.")
     list_templates.set_defaults(func=command_list_templates)
 
-    add_template = subparsers.add_parser("add-template", help="Copy a .tex.jinja2 resume template into the skill.")
+    add_template = subparsers.add_parser("add-template", help="Copy a .txt Jinja2 resume template into the skill.")
     add_template.add_argument("--name", help="Template name. Defaults to the source filename.")
-    add_template.add_argument("--file", required=True, help="Path to a .tex.jinja2 template file.")
+    add_template.add_argument("--file", required=True, help="Path to a .txt template file.")
     add_template.add_argument("--force", action="store_true", help="Overwrite an existing template with the same name.")
     add_template.set_defaults(func=command_add_template)
 

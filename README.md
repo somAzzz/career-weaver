@@ -100,7 +100,7 @@ python skill/scripts/setup_workflow.py list-templates
 Add a custom resume template:
 
 ```bash
-python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.txt
 ```
 
 ## Resume Template Library
@@ -238,7 +238,7 @@ python skill/scripts/setup_workflow.py list-templates
 添加自定义简历模板：
 
 ```bash
-python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.tex.jinja2
+python skill/scripts/setup_workflow.py add-template --name sidebar_modern --file sidebar_modern.txt
 ```
 
 ## 简历模板库

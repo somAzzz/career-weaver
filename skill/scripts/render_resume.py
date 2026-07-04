@@ -28,6 +28,7 @@ DEFAULT_OUTPUT = Path("output")
 DEFAULT_DATA = Path("debug") / "resume_data.json"
 LATEX_TIMEOUT_SECONDS = 120
 PLACEHOLDER_VALUES = {"", "todo", "tbd", "unknown", "n/a", "na", "none", "untitled"}
+TEMPLATE_SUFFIX = ".txt"
 
 LATEX_SPECIALS = {
     "%": r"\%",
@@ -104,10 +105,10 @@ def discover_templates() -> dict[str, Path]:
     if not TEMPLATES_ROOT.exists():
         return templates
 
-    for template_path in sorted(TEMPLATES_ROOT.glob("*/*.tex.jinja2")):
+    for template_path in sorted(TEMPLATES_ROOT.glob(f"*/*{TEMPLATE_SUFFIX}")):
         if template_path.parent.name == "common":
             continue
-        name = template_path.stem.removesuffix(".tex")
+        name = template_path.stem
         templates.setdefault(name, template_path)
         templates.setdefault(template_path.parent.name, template_path)
     return templates
@@ -404,7 +405,7 @@ def parse_args() -> argparse.Namespace:
         "--template",
         "-t",
         default="engineer",
-        help="Template name or Jinja2 LaTeX template path. Use setup_workflow.py list-templates to inspect options.",
+        help="Template name or .txt Jinja2 template path. Use setup_workflow.py list-templates to inspect options.",
     )
     parser.add_argument(
         "--output",

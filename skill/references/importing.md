@@ -73,7 +73,7 @@ Then include the copied filename in `debug/resume_data.json` only when generatin
 Generate both versions when the user is unsure:
 
 - no-photo default template
-- photo template: `assets/templates/engineer/engineer_with_photo.tex.jinja2`
+- photo template: `assets/templates/engineer/engineer_with_photo.txt`
 
 ## Minimal Clarifying Questions
 
