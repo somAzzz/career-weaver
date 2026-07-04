@@ -258,7 +258,7 @@ output/{person}/jobs/{job}/
     tailored_resume.log
     tailored_resume.aux
     tailored_resume.out
-    developercv.cls
+    developercv.cls        # generated from assets/templates/common/developercv.txt
 ```
 
 ## Response Style

@@ -275,6 +275,8 @@ def copy_template_resources(template_path: Path, build_path: Path) -> None:
     ]
     for common_dir in candidates:
         if common_dir.exists():
+            for class_template in common_dir.glob("*.txt"):
+                shutil.copy2(class_template, build_path / f"{class_template.stem}.cls")
             for cls_file in common_dir.glob("*.cls"):
                 shutil.copy2(cls_file, build_path / cls_file.name)
 

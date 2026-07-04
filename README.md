@@ -131,7 +131,7 @@ output/{person}/jobs/{job}/
     tailored_resume.log
     tailored_resume.aux
     tailored_resume.out
-    developercv.cls
+    developercv.cls        # generated from skill/assets/templates/common/developercv.txt
 ```
 
 ## Multilingual Behavior
@@ -269,7 +269,7 @@ output/{person}/jobs/{job}/
     tailored_resume.log
     tailored_resume.aux
     tailored_resume.out
-    developercv.cls
+    developercv.cls        # 由 skill/assets/templates/common/developercv.txt 生成
 ```
 
 ## 多语言能力
