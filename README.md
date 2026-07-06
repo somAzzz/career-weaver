@@ -140,6 +140,30 @@ User interaction can stay in Chinese while the resume output is localized to the
 
 Current PDF templates use Noto Sans through the LaTeX `noto` package and work best for English, German, French, and other Latin-script targets. Chinese can be used as the interaction/source-profile language; direct Chinese PDF output needs a future CJK-capable template or renderer.
 
+## TODO
+
+The product direction is to move beyond keyword matching and model the recruiting logic behind a JD: why the role exists, what the real gates are, and how a truthful candidate story should be positioned.
+
+### P0: Recruiting Mindset Foundation
+
+- [x] Add `Role Archetype` to the match report so roles can be interpreted as builder, maintainer, scale, migration, leadership, rescue, or hybrid roles.
+- [x] Add `Candidate Positioning` with a primary recruiter-facing label, alternative positioning, and positioning to avoid.
+- [x] Add `Layered Requirements` to distinguish legal gates, core technical gates, experience gates, strong filters, tie-breakers, and cosmetic keywords.
+- [x] Make P0 outputs part of the upstream strategy for tailored resume generation.
+
+### P1: Actionable Delivery Layer
+
+- [x] Add `Application Recommendation` with decisions such as strong apply, apply with tailoring, referral first, low priority, or do not apply.
+- [x] Add recruiter first-screen optimization for the 10-30 second resume scan and above-the-fold content.
+- [x] Add graded risk handling, such as fatal gap, explainable gap, resume-only gap, and interview gap.
+
+### P2: Full Funnel Extension
+
+- [ ] Add a hiring funnel assessment for ATS, recruiter screen, hiring manager review, interview, and offer/logistics risk.
+- [ ] Add HR screen question generation for work authorization, location, salary, notice period, language, and motivation.
+- [ ] Add outreach strategy for recruiter messages, referral requests, and cover letter angles.
+- [ ] Add market competitiveness estimates only when enough external or user-provided market context is available.
+
 ## 中文
 
 Career Weaver 是一个可安装到 Codex 等 coding agent 中的求职材料 skill。它可以把用户的原始简历、岗位 JD、照片等材料，整理成面向具体岗位的多语言求职产物。
@@ -277,3 +301,27 @@ output/{person}/jobs/{job}/
 用户可以用中文与 agent 交互，同时让最终简历输出为 JD 或用户指定的语言。例如，中文用户可以提供中文 profile 和德语 JD，然后要求生成德语简历。Career Weaver 会基于 `profile.yaml` 中的事实生成内容，翻译简历文本，并通过 `debug/resume_data.json` 中的 `labels` 本地化章节标题。
 
 当前 PDF 模板通过 LaTeX `noto` 包使用 Noto Sans，最适合英文、德文、法文等拉丁字母语言。中文可以作为交互语言和源 profile 语言；如果要直接生成中文 PDF，还需要后续增加支持 CJK 的模板或渲染器。
+
+## TODO
+
+产品演进方向是从关键词匹配升级为招聘逻辑建模：理解岗位为什么存在、真正的筛选门槛是什么，以及候选人应该如何在不编造事实的前提下完成定位。
+
+### P0：招聘心智地基
+
+- [x] 在匹配报告中加入 `Role Archetype`，将岗位识别为 builder、maintainer、scale、migration、leadership、rescue 或 hybrid 类型。
+- [x] 加入 `Candidate Positioning`，包含主定位标签、备选定位和应避免的定位。
+- [x] 加入 `Layered Requirements`，区分 legal gate、core technical gate、experience gate、strong filter、tie-breaker 和 cosmetic keyword。
+- [x] 让 P0 输出成为后续定制简历生成的上游策略约束。
+
+### P1：行动交付层
+
+- [x] 加入 `Application Recommendation`，给出 strong apply、apply with tailoring、referral first、low priority 或 do not apply 等决策。
+- [x] 加入 recruiter 首屏优化，面向 10-30 秒简历扫视和首屏内容优先级。
+- [x] 加入风险分级，例如 fatal gap、explainable gap、resume-only gap 和 interview gap。
+
+### P2：完整招聘漏斗扩展
+
+- [ ] 加入招聘漏斗评估，覆盖 ATS、HR 初筛、Hiring Manager review、面试和 offer/logistics 风险。
+- [ ] 加入 HR 初筛问题生成，覆盖工作许可、地点、薪资、notice period、语言和求职动机。
+- [ ] 加入触达策略，生成 recruiter message、内推请求和 cover letter 角度。
+- [ ] 仅在有足够外部或用户提供的市场上下文时，加入市场竞争力判断。

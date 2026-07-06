@@ -12,6 +12,7 @@ Use all available artifacts:
 - `output/{person}/jobs/{job}/debug/resume_data.json`
 
 The interview prep must be consistent with both the final tailored resume and the match report gaps.
+Use graded gaps from the match report to decide how much preparation each risk needs.
 
 ## Output
 
@@ -66,8 +67,8 @@ Save to `output/{person}/jobs/{job}/deliverables/interview_prep.md`.
   - Avoid saying: ...
 
 ## Gap Defense
-| Gap From Match Report | Likely Question | Safe Positioning | Avoid Saying |
-|---|---|---|---|
+| Gap From Match Report | Risk Grade | Likely Question | Safe Positioning | Avoid Saying |
+|---|---|---|---|---|
 
 ## Company & Role Fit
 | Question | What They Test | Evidence To Prepare |
@@ -93,6 +94,9 @@ Save to `output/{person}/jobs/{job}/deliverables/interview_prep.md`.
 - It is allowed to say what the interviewer is testing, which evidence to prepare, and what to avoid.
 - Every `Best Evidence To Prepare` entry should point to a real profile/resume item.
 - Gap defense must inherit gaps from `match_report.md`; do not invent unrelated gaps.
+- Prioritize `Explainable gap` and `Interview gap` items for question preparation.
+- Treat `Fatal gap` items as truth-boundary and application-risk topics; do not script answers that imply the blocker is solved.
+- Use `Resume-only gap` items only when the final resume still leaves the evidence unclear.
 - Technical questions should be specific to the final resume bullets, not generic trivia.
 - If the resume claims ownership, scale, mentorship, incident response, or architecture, include follow-up questions.
 - Preserve truth boundaries from `constraints`, `do_not_claim`, and `review_notes`.
@@ -133,9 +137,9 @@ For each important gap:
 Example:
 
 ```markdown
-| Gap From Match Report | Likely Question | Safe Positioning | Avoid Saying |
-|---|---|---|---|
-| No formal people management | Have you managed engineers directly? | Discuss mentoring, architecture reviews, and technical leadership. | Do not claim hiring, performance reviews, or compensation ownership. |
+| Gap From Match Report | Risk Grade | Likely Question | Safe Positioning | Avoid Saying |
+|---|---|---|---|---|
+| No formal people management | Explainable gap | Have you managed engineers directly? | Discuss mentoring, architecture reviews, and technical leadership. | Do not claim hiring, performance reviews, or compensation ownership. |
 ```
 
 ## Questions To Ask Interviewers

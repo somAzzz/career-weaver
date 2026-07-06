@@ -78,6 +78,9 @@ Create `output/{person}/jobs/{job}/debug/resume_data.json` as plain JSON. Do not
 - Generate this JSON from verified `profile.yaml` facts and the target JD. Do not use JD-only claims as resume facts.
 - `role` must be the target position the user is applying for. Do not use an empty, TODO, unknown, or placeholder role.
 - Use a short, non-specific city/state/country-level location for resume display, for example `San Francisco, CA` or `Germany - Berlin`. Do not render full street addresses unless the user explicitly asks.
+- When `match_report.md` is available, make the summary, first listed skills, first experience description, and earliest bullets implement its recruiter first-screen plan.
+- The primary candidate positioning label should be visible through the `role`, `summary`, and highest-priority bullets without copying unsupported language.
+- Resume-only gaps from the match report should be fixed by surfacing existing verified evidence; fatal or unsupported gaps must not be hidden with vague wording.
 - If the target language is not English, translate resume-facing text and localize `labels`; preserve company names, product names, metrics, and technologies.
 - Keep bullets concise and evidence-backed. Prefer 2-5 bullets per role.
 - Use `date` consistently; templates render it exactly as provided.

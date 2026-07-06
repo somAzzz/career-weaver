@@ -168,9 +168,12 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 1. Read `data/{person}/profile.yaml`.
 2. Read `data/{person}/jds/{job}.txt`.
 3. Parse JD requirements into must-have, nice-to-have, responsibilities, hidden signals, and red flags.
-4. Compare JD requirements against verified profile facts and constraints.
-5. Build evidence-backed scoring, keyword coverage, gaps, do-not-claim boundaries, and resume strategy.
-6. Save `output/{person}/jobs/{job}/deliverables/match_report.md` using `references/report_schema.md`.
+4. Analyze the JD intent: likely hiring need, why the JD is structured this way, hidden priorities, and positioning implications.
+5. Classify role archetype, layered requirements, and candidate positioning labels.
+6. Compare JD requirements against verified profile facts and constraints.
+7. Grade gaps and risks as fatal, explainable, resume-only, or interview risks.
+8. Build evidence-backed scoring, keyword coverage, do-not-claim boundaries, application recommendation, recruiter first-screen optimization, JD intent analysis, role archetype, candidate positioning, and resume strategy.
+9. Save `output/{person}/jobs/{job}/deliverables/match_report.md` using `references/report_schema.md`.
 
 ### "Generate my resume"
 
@@ -179,7 +182,7 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 3. If no JD is available, ask for a JD unless the user explicitly requested a generic resume, sample render, or template preview.
 4. If prior job outputs or helper scripts exist and the user has not chosen reuse, ask the Run Scope And Reuse Choice question. Do not copy old `match_report.md` or `resume_data.json` by default.
 5. For JD-targeted resumes, read the selected JD. Generate or refresh `match_report.md` from the current `profile.yaml` + JD unless the user explicitly chose to reuse an existing strategy.
-6. Treat `match_report.md` as the strategy source for summary angle, experience priority, project priority, skills priority, gaps, and do-not-claim boundaries.
+6. Treat `match_report.md` as the strategy source for role archetype, candidate positioning, recruiter first-screen optimization, summary angle, experience priority, project priority, skills priority, graded gaps, and do-not-claim boundaries.
 7. For generic resumes, use the strongest broad profile facts, skip fit scoring, use the job slug `general_resume`, and state that no JD tailoring was performed.
 8. Select the strongest relevant facts from the profile.
 9. Generate a factual summary.
