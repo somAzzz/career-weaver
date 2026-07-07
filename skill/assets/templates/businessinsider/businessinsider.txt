@@ -50,6 +50,7 @@
 \sloppy
 
 \begin{minipage}[t]{0.72\textwidth}
+\vspace{0pt}
 {\Huge\bfseries\color{SlateGrey}\VAR{name | latex_escape}}\par
 \vspace{0.35ex}
 {\Large\color{BusinessPurple}\VAR{role | latex_escape}}\par
@@ -70,6 +71,7 @@
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.20\textwidth}
+\vspace{0pt}
 \raggedleft
 \BLOCK{if photo and photo.filename}
 \includegraphics[width=2.5cm,height=2.5cm,keepaspectratio]{\VAR{photo.filename}}
