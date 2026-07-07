@@ -5,54 +5,59 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[sfdefault]{noto}
-\usepackage[reset,a4paper,margin=7mm,top=7mm,right=5mm]{geometry}
+\usepackage[reset,a4paper,margin=8mm,top=8mm,bottom=9mm]{geometry}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{multicol}
 
 \definecolor{HeaderBlack}{HTML}{242424}
 \definecolor{SoftWhite}{HTML}{F3F3F3}
 \definecolor{MutedText}{HTML}{666666}
 \definecolor{RuleGrey}{HTML}{1F1F1F}
 
-\hypersetup{colorlinks=true,urlcolor=RuleGrey}
+\hypersetup{hidelinks}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.35ex}
+\setlength{\columnsep}{12mm}
 \setlist[itemize]{noitemsep,topsep=0.15ex,leftmargin=2.0ex}
 \renewcommand{\familydefault}{\sfdefault}
+\emergencystretch=2em
 
 \newcommand{\sectiontitle}[1]{%
-  \vspace{1.1ex}%
+  \vspace{1.05ex}%
   {\large\bfseries\MakeUppercase{#1}}\par
-  \vspace{-0.5ex}{\rule{0.82\linewidth}{0.5pt}}\par\vspace{0.5ex}
+  \vspace{-0.45ex}{\rule{\linewidth}{0.5pt}}\par\vspace{0.45ex}
 }
 \newcommand{\sectioncontent}[1]{%
   {\small #1}\par\vspace{0.8ex}
 }
-\newcommand{\job}[3]{%
-  {\bfseries\small #1} -- {\small #2}\hfill{\small\color{MutedText}#3}\par
-}
-\newcommand{\project}[2]{%
-  {\bfseries\small #1}\hfill{\small\color{MutedText}#2}\par
+\newcommand{\projectheading}[2]{%
+  {\bfseries\small #1}\par
+  {\small\color{MutedText}#2}\par
 }
 \newcommand{\spacevv}{\vspace{1.1ex}}
 \newcommand{\skillline}[2]{%
   {\bfseries #1}\par
   #2\par\vspace{0.75ex}
 }
+\newcommand{\keptentrybegin}{\begin{minipage}{\linewidth}\raggedright}
+\newcommand{\keptentryend}{\end{minipage}\par}
 
 \begin{document}
+\raggedright
+\sloppy
 
 \colorbox{HeaderBlack}{%
   \begin{minipage}{\dimexpr\linewidth-2\fboxsep\relax}
-  \vspace{5mm}
+  \vspace{4.2mm}
   \centering
   {\Huge\bfseries\color{SoftWhite}\VAR{name | latex_escape}}\par
-  \vspace{1.5mm}
+  \vspace{1.2mm}
   {\Large\color{SoftWhite!72}\VAR{role | latex_escape}}\par
-  \vspace{2.2mm}
-  {\small\color{SoftWhite!62}
+  \vspace{2.0mm}
+  {\small\color{SoftWhite!70}
     \href{mailto:\VAR{contact.email}}{\VAR{contact.email | latex_escape}}
     \BLOCK{if contact.phone}
     \quad|\quad \VAR{contact.phone | latex_escape}
@@ -65,32 +70,56 @@
     \quad|\quad \href{\VAR{contact.github}}{\VAR{contact.github | display_url | latex_escape}}
     \BLOCK{endif}
   }\par
-  \vspace{5mm}
+  \vspace{4.2mm}
   \end{minipage}
 }
 
-\vspace{5mm}
+\vspace{4mm}
 
-\begin{minipage}[t]{0.31\linewidth}
-\raggedright
-\sectiontitle{\VAR{labels.summary | default('About me') | latex_escape}}
+\begin{multicols}{2}
+\raggedcolumns
+
+\sectiontitle{\VAR{labels.summary | default('Profile') | latex_escape}}
 \sectioncontent{\VAR{summary | latex_escape}}
+
+\BLOCK{if experience}
+\sectiontitle{\VAR{labels.experience | default('Experience') | latex_escape}}
+\BLOCK{for exp in experience}
+\keptentrybegin
+{\bfseries\small \VAR{exp.company | latex_escape}} -- {\small \VAR{exp.role | latex_escape}}\par
+{\small\color{MutedText}\VAR{exp.date | latex_escape}}\par
+\BLOCK{if exp.description}
+{\small\itshape \VAR{exp.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if exp.bullets}
+\begin{itemize}
+\BLOCK{for bullet in exp.bullets}
+\item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+\end{itemize}
+\BLOCK{endif}
+\keptentryend
+\BLOCK{if not loop.last}
+\spacevv
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
 
 \BLOCK{if education}
 \sectiontitle{\VAR{labels.education | default('Education') | latex_escape}}
-\sectioncontent{
 \BLOCK{for edu in education}
-\textbf{\VAR{edu.degree | latex_escape}}\BLOCK{if edu.major} in \VAR{edu.major | latex_escape}\BLOCK{endif}\\
-\VAR{edu.school | latex_escape}\\
-\textcolor{MutedText}{\VAR{edu.date | latex_escape}}\\
+\keptentrybegin
+\textbf{\VAR{edu.degree | latex_escape}}\BLOCK{if edu.major} in \VAR{edu.major | latex_escape}\BLOCK{endif}\par
+\VAR{edu.school | latex_escape}\par
+\textcolor{MutedText}{\VAR{edu.date | latex_escape}}\par
 \BLOCK{if edu.thesis}
-\textit{Thesis: \VAR{edu.thesis | latex_escape}}\\
+\textit{Thesis: \VAR{edu.thesis | latex_escape}}\par
 \BLOCK{endif}
+\keptentryend
 \BLOCK{if not loop.last}
-\vspace{1.2mm}
+\spacevv
 \BLOCK{endif}
 \BLOCK{endfor}
-}
 \BLOCK{endif}
 
 \BLOCK{if contact.github or contact.linkedin}
@@ -114,6 +143,15 @@
 }
 \BLOCK{endif}
 
+\BLOCK{if languages}
+\sectiontitle{\VAR{labels.languages | default('Languages') | latex_escape}}
+\sectioncontent{
+\BLOCK{for lang in languages}
+\textbf{\VAR{lang.name | latex_escape}} -- \VAR{lang.level | latex_escape}\\
+\BLOCK{endfor}
+}
+\BLOCK{endif}
+
 \BLOCK{if certifications}
 \sectiontitle{\VAR{labels.certifications | default('Honors \\& Awards') | latex_escape}}
 \sectioncontent{
@@ -126,56 +164,16 @@
 }
 \BLOCK{endif}
 
-\BLOCK{if languages}
-\sectiontitle{\VAR{labels.languages | default('Languages') | latex_escape}}
-\sectioncontent{
-\BLOCK{for lang in languages}
-\textbf{\VAR{lang.name | latex_escape}} -- \VAR{lang.level | latex_escape}\\
-\BLOCK{endfor}
-}
-\BLOCK{endif}
-
-\BLOCK{if hobbies}
-\sectiontitle{\VAR{labels.hobbies | default('Hobbies \\& Interests') | latex_escape}}
-\sectioncontent{\VAR{hobbies | latex_escape}}
-\BLOCK{endif}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.64\linewidth}
-\raggedright
-
-\BLOCK{if experience}
-\sectiontitle{\VAR{labels.experience | default('Experience') | latex_escape}}
-\sectioncontent{
-\BLOCK{for exp in experience}
-\job{\VAR{exp.company | latex_escape}}{\VAR{exp.role | latex_escape}}{\VAR{exp.date | latex_escape}}
-\BLOCK{if exp.description}
-{\itshape \VAR{exp.description | latex_escape}}\par
-\BLOCK{endif}
-\BLOCK{if exp.bullets}
-\begin{itemize}
-\BLOCK{for bullet in exp.bullets}
-\item \VAR{bullet | latex_escape}
-\BLOCK{endfor}
-\end{itemize}
-\BLOCK{endif}
-\BLOCK{if not loop.last}
-\spacevv
-\BLOCK{endif}
-\BLOCK{endfor}
-}
-\BLOCK{endif}
-
 \BLOCK{if projects}
 \sectiontitle{\VAR{labels.projects | default('Personal Projects') | latex_escape}}
-\sectioncontent{
 \BLOCK{for project_item in projects}
-\project{\VAR{project_item.title | latex_escape}}{\VAR{project_item.date | latex_escape}}
+\keptentrybegin
+\projectheading{\VAR{project_item.title | latex_escape}}{\VAR{project_item.date | latex_escape}}
 \BLOCK{if project_item.company}
 {\small\color{MutedText}\VAR{project_item.company | latex_escape}}\par
 \BLOCK{endif}
 \BLOCK{if project_item.description}
-{\itshape \VAR{project_item.description | latex_escape}}\par
+{\small\itshape \VAR{project_item.description | latex_escape}}\par
 \BLOCK{endif}
 \BLOCK{if project_item.bullets}
 \begin{itemize}
@@ -184,23 +182,23 @@
 \BLOCK{endfor}
 \end{itemize}
 \BLOCK{endif}
+\keptentryend
 \BLOCK{if not loop.last}
 \spacevv
 \BLOCK{endif}
 \BLOCK{endfor}
-}
 \BLOCK{endif}
 
 \BLOCK{if research}
 \sectiontitle{\VAR{labels.research | default('Research') | latex_escape}}
-\sectioncontent{
 \BLOCK{for research_item in research}
-\project{\VAR{research_item.title | latex_escape}}{\VAR{research_item.date | latex_escape}}
+\keptentrybegin
+\projectheading{\VAR{research_item.title | latex_escape}}{\VAR{research_item.date | latex_escape}}
 \BLOCK{if research_item.company}
 {\small\color{MutedText}\VAR{research_item.company | latex_escape}}\par
 \BLOCK{endif}
 \BLOCK{if research_item.description}
-{\itshape \VAR{research_item.description | latex_escape}}\par
+{\small\itshape \VAR{research_item.description | latex_escape}}\par
 \BLOCK{endif}
 \BLOCK{if research_item.bullets}
 \begin{itemize}
@@ -209,14 +207,19 @@
 \BLOCK{endfor}
 \end{itemize}
 \BLOCK{endif}
+\keptentryend
 \BLOCK{if not loop.last}
 \spacevv
 \BLOCK{endif}
 \BLOCK{endfor}
-}
 \BLOCK{endif}
 
-\hfill{\tiny Last updated \today}
-\end{minipage}
+\BLOCK{if hobbies}
+\sectiontitle{\VAR{labels.hobbies | default('Hobbies \\& Interests') | latex_escape}}
+\sectioncontent{\VAR{hobbies | latex_escape}}
+\BLOCK{endif}
 
+\end{multicols}
+
+\hfill{\tiny Last updated \today}
 \end{document}
