@@ -23,6 +23,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.35ex}
 \setlength{\columnsep}{1cm}
+\emergencystretch=2em
 \setlist[itemize]{leftmargin=4mm,itemsep=0.2ex,topsep=0.25ex,parsep=0pt}
 
 \newcommand{\cvsection}[1]{%
@@ -32,7 +33,8 @@
 }
 \newcommand{\cvevent}[3]{%
   {\large\bfseries\color{SlateGrey}#1}\par
-  {\bfseries\color{BusinessPurple}#2}\hfill{\small #3}\par
+  {\bfseries\color{BusinessPurple}#2}\par
+  {\small\color{LightGrey}#3}\par
 }
 \newcommand{\cvtag}[1]{%
   \begingroup
@@ -40,10 +42,12 @@
   \colorbox{TagGrey}{\strut\small\color{SlateGrey}#1}%
   \endgroup
 }
-\newcommand{\divider}{\vspace{0.45ex}{\color{LightGrey!35}\rule{\linewidth}{0.5pt}}\vspace{0.45ex}}
+\newcommand{\divider}{\par\vspace{0.45ex}{\color{LightGrey!35}\rule{\linewidth}{0.5pt}}\par\vspace{0.45ex}}
 \newcommand{\contactsep}{\hspace{1.15em}}
 
 \begin{document}
+\raggedright
+\sloppy
 
 \begin{minipage}[t]{0.72\textwidth}
 {\Huge\bfseries\color{SlateGrey}\VAR{name | latex_escape}}\par
@@ -81,6 +85,7 @@
 \BLOCK{if experience}
 \cvsection{\VAR{labels.experience | default('Experience') | latex_escape}}
 \BLOCK{for exp in experience}
+\begin{minipage}{\linewidth}\raggedright
 \cvevent{\VAR{exp.role | latex_escape}}{\VAR{exp.company | latex_escape}}{\VAR{exp.date | latex_escape}}
 \BLOCK{if exp.description}
 {\small\itshape \VAR{exp.description | latex_escape}}\par
@@ -102,12 +107,14 @@
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
+\end{minipage}\par
 \BLOCK{endfor}
 \BLOCK{endif}
 
 \BLOCK{if projects}
 \cvsection{\VAR{labels.projects | default('Projects') | latex_escape}}
 \BLOCK{for project in projects}
+\begin{minipage}{\linewidth}\raggedright
 \cvevent{\VAR{project.title | latex_escape}}{\VAR{project.company | latex_escape}}{\VAR{project.date | latex_escape}}
 \BLOCK{if project.description}
 {\small\itshape \VAR{project.description | latex_escape}}\par
@@ -122,12 +129,14 @@
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
+\end{minipage}\par
 \BLOCK{endfor}
 \BLOCK{endif}
 
 \BLOCK{if research}
 \cvsection{\VAR{labels.research | default('Research Projects') | latex_escape}}
 \BLOCK{for research_item in research}
+\begin{minipage}{\linewidth}\raggedright
 \cvevent{\VAR{research_item.title | latex_escape}}{\VAR{research_item.company | latex_escape}}{\VAR{research_item.date | latex_escape}}
 \BLOCK{if research_item.description}
 {\small\itshape \VAR{research_item.description | latex_escape}}\par
@@ -142,10 +151,9 @@
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
+\end{minipage}\par
 \BLOCK{endfor}
 \BLOCK{endif}
-
-\columnbreak
 
 \cvsection{\VAR{labels.summary | default('Profile') | latex_escape}}
 \VAR{summary | latex_escape}\par
@@ -163,18 +171,21 @@
 \BLOCK{endif}
 
 \BLOCK{if languages}
+\begin{minipage}{\linewidth}\raggedright
 \cvsection{\VAR{labels.languages | default('Languages') | latex_escape}}
 \BLOCK{for lang in languages}
-\textbf{\VAR{lang.name | latex_escape}}\hfill \VAR{lang.level | latex_escape}\par
+\textbf{\VAR{lang.name | latex_escape}:} \VAR{lang.level | latex_escape}\par
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
 \BLOCK{endfor}
+\end{minipage}\par
 \BLOCK{endif}
 
 \BLOCK{if certifications}
 \cvsection{\VAR{labels.certifications | default('Certifications') | latex_escape}}
 \BLOCK{for cert in certifications}
+\begin{minipage}{\linewidth}\raggedright
 \textbf{\VAR{cert.name | latex_escape}}\par
 \VAR{cert.issuer | latex_escape}\BLOCK{if cert.date} \hfill \VAR{cert.date | latex_escape}\BLOCK{endif}\par
 \BLOCK{if cert.description}
@@ -183,12 +194,14 @@
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
+\end{minipage}\par
 \BLOCK{endfor}
 \BLOCK{endif}
 
 \BLOCK{if education}
 \cvsection{\VAR{labels.education | default('Education') | latex_escape}}
 \BLOCK{for edu in education}
+\begin{minipage}{\linewidth}\raggedright
 \cvevent{\VAR{edu.degree | latex_escape}\BLOCK{if edu.major} in \VAR{edu.major | latex_escape}\BLOCK{endif}}{\VAR{edu.school | latex_escape}}{\VAR{edu.date | latex_escape}}
 \BLOCK{if edu.thesis}
 {\small\textbf{Thesis:} \VAR{edu.thesis | latex_escape}}\par
@@ -196,6 +209,7 @@
 \BLOCK{if not loop.last}
 \divider
 \BLOCK{endif}
+\end{minipage}\par
 \BLOCK{endfor}
 \BLOCK{endif}
 
