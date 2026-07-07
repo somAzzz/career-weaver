@@ -164,6 +164,6 @@ PDF engine:
 - Windows: install Tectonic, MiKTeX, or TeX Live and ensure the engine is on `PATH`.
 - macOS: install Tectonic, MacTeX, or BasicTeX and ensure the engine is on `PATH`.
 - Linux: install Tectonic, or TeX Live packages that include `pdflatex`.
-- Built-in templates use the LaTeX `noto` package for consistent Latin-script multilingual output, including English, German, and French.
+- The renderer enforces the LaTeX `noto` package for consistent Latin-script multilingual output, including English, German, and French.
 
 If no LaTeX engine is available, still generate and inspect `debug/tailored_resume.tex`; PDF compilation can happen later.

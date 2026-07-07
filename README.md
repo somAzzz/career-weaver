@@ -138,7 +138,7 @@ output/{person}/jobs/{job}/
 
 User interaction can stay in Chinese while the resume output is localized to the JD or requested language. For example, a Chinese user can provide a Chinese profile and a German JD, then ask for a German resume. Career Weaver keeps facts grounded in `profile.yaml`, translates resume-facing text, and localizes section labels through `labels` in `debug/resume_data.json`.
 
-Current PDF templates use Noto Sans through the LaTeX `noto` package and work best for English, German, French, and other Latin-script targets. Chinese can be used as the interaction/source-profile language; direct Chinese PDF output needs a future CJK-capable template or renderer.
+The PDF renderer enforces Noto Sans through the LaTeX `noto` package and works best for English, German, French, and other Latin-script targets. Chinese can be used as the interaction/source-profile language; direct Chinese PDF output needs a future CJK-capable template or renderer.
 
 ## TODO
 
@@ -300,7 +300,7 @@ output/{person}/jobs/{job}/
 
 用户可以用中文与 agent 交互，同时让最终简历输出为 JD 或用户指定的语言。例如，中文用户可以提供中文 profile 和德语 JD，然后要求生成德语简历。Career Weaver 会基于 `profile.yaml` 中的事实生成内容，翻译简历文本，并通过 `debug/resume_data.json` 中的 `labels` 本地化章节标题。
 
-当前 PDF 模板通过 LaTeX `noto` 包使用 Noto Sans，最适合英文、德文、法文等拉丁字母语言。中文可以作为交互语言和源 profile 语言；如果要直接生成中文 PDF，还需要后续增加支持 CJK 的模板或渲染器。
+PDF 渲染器会通过 LaTeX `noto` 包强制使用 Noto Sans，最适合英文、德文、法文等拉丁字母语言。中文可以作为交互语言和源 profile 语言；如果要直接生成中文 PDF，还需要后续增加支持 CJK 的模板或渲染器。
 
 ## TODO
 

@@ -29,6 +29,14 @@ DEFAULT_DATA = Path("debug") / "resume_data.json"
 LATEX_TIMEOUT_SECONDS = 120
 PLACEHOLDER_VALUES = {"", "todo", "tbd", "unknown", "n/a", "na", "none", "untitled"}
 TEMPLATE_SUFFIX = ".txt"
+NOTO_PACKAGE_PATTERN = re.compile(r"\\usepackage(?:\[[^\]]*\])?\{noto\}")
+FAMILY_DEFAULT_PATTERN = re.compile(r"\\renewcommand\*?\{?\\familydefault\}?\{\\sfdefault\}")
+PREAMBLE_PACKAGE_PATTERN = re.compile(
+    r"^(\\(?:RequirePackage|usepackage)(?:\[[^\]]*\])?\{(?:fontenc|inputenc|babel)\}.*)$",
+    re.MULTILINE,
+)
+DOCUMENTCLASS_PATTERN = re.compile(r"^(\\documentclass(?:\[[^\]]*\])?\{[^}]+\}.*)$", re.MULTILINE)
+NOTO_FONT_BLOCK = "\n\\usepackage[sfdefault]{noto}\n\\renewcommand{\\familydefault}{\\sfdefault}"
 
 LATEX_SPECIALS = {
     "%": r"\%",
@@ -267,6 +275,31 @@ def build_jinja_env(template_dir: Path) -> Environment:
     return env
 
 
+def ensure_noto_font_preamble(tex_source: str) -> str:
+    """Ensure every rendered resume defaults to Noto Sans."""
+    source = tex_source
+
+    if not NOTO_PACKAGE_PATTERN.search(source):
+        package_matches = list(PREAMBLE_PACKAGE_PATTERN.finditer(source))
+        if package_matches:
+            insert_at = package_matches[-1].end()
+            source = f"{source[:insert_at]}{NOTO_FONT_BLOCK}{source[insert_at:]}"
+        else:
+            documentclass_match = DOCUMENTCLASS_PATTERN.search(source)
+            if documentclass_match:
+                insert_at = documentclass_match.end()
+                source = f"{source[:insert_at]}{NOTO_FONT_BLOCK}{source[insert_at:]}"
+            else:
+                source = f"{NOTO_FONT_BLOCK}\n{source}"
+    elif not FAMILY_DEFAULT_PATTERN.search(source):
+        noto_match = NOTO_PACKAGE_PATTERN.search(source)
+        if noto_match:
+            insert_at = noto_match.end()
+            source = f"{source[:insert_at]}\n\\renewcommand{{\\familydefault}}{{\\sfdefault}}{source[insert_at:]}"
+
+    return source
+
+
 def copy_template_resources(template_path: Path, build_path: Path) -> None:
     candidates = [
         template_path.parent / "common",
@@ -374,7 +407,7 @@ def render(data_file: Path, template_file: Path, output_dir: Path, engine: str =
     template = env.get_template(template_file.name)
 
     tex_file = debug_path / "tailored_resume.tex"
-    tex_file.write_text(template.render(**data), encoding="utf-8")
+    tex_file.write_text(ensure_noto_font_preamble(template.render(**data)), encoding="utf-8")
 
     copy_template_resources(template_file, debug_path)
     copy_photo(data, data_file, debug_path)

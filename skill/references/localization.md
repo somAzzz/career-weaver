@@ -44,7 +44,7 @@ Ask one short question only if the choice materially affects the output:
 
 - Strong: English and most Latin-script European languages, including German and French.
 - Strong: Chinese or other-language source profiles translated into English/German/French target resumes.
-- Limited: Chinese/Japanese/Korean target PDF output with the default LaTeX templates. The current templates use the LaTeX `noto` package for Latin-script multilingual output, but do not include a CJK-capable template, font setup, or XeLaTeX/LuaLaTeX workflow.
+- Limited: Chinese/Japanese/Korean target PDF output with the default LaTeX templates. The renderer enforces the LaTeX `noto` package for Latin-script multilingual output, but does not include a CJK-capable template, font setup, or XeLaTeX/LuaLaTeX workflow.
 - Workaround for CJK target output: generate `debug/resume_data.json` and a translated text/Markdown draft, then use a future CJK template or a DOCX/HTML renderer.
 
 ## Suggested Labels
