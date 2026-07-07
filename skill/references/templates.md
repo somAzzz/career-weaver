@@ -47,6 +47,8 @@ python scripts/setup_workflow.py list-templates
 
 Show the template names to the user and ask which one they prefer before rendering a resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults. Templates marked `[photo]` support `photo.filename`; if the user selects one, ask the mandatory photo question before rendering.
 
+When generating a resume, always rerun `list-templates` immediately before asking the template-choice question. Build the candidate list from that output, not from a static list in docs or memory. A newly added template must be included in the next template-choice candidates.
+
 ## Choose A Template
 
 The renderer accepts either a template name or a path:
@@ -72,6 +74,8 @@ When generating multiple PDFs, ask for the exact version matrix before rendering
 - `engineer`: default compact technical resume.
 - `engineer_with_photo`: technical resume with a photo block.
 - `luxsleek`: polished sidebar CV with compact experience entries. The sidebar is for identity/contact/language details and concise skills; summary renders in the main flow so long profile text can paginate.
+- `businessinsider`: two-column AltaCV template adapted from the Business Insider / Marissa Mayer Overleaf example. It supports an optional right-side photo and works well for concise executive, product, and leadership resumes with strong skills tags.
+- `resume_cv`: two-column minimalist template adapted from Stefan Radu's Overleaf "Resume / CV" example. It is a no-photo layout for concise Computer Science and Engineering resumes.
 
 ## Photo-Capable Templates
 
@@ -81,6 +85,7 @@ Bundled photo-capable templates:
 
 - `engineer_with_photo`
 - `luxsleek`
+- `businessinsider`
 
 Before rendering any resume PDF, ask whether the user has a photo or wants a no-photo version. Ask before final template selection so the agent cannot silently choose a no-photo template to avoid the question. Do not silently default unless the user explicitly asks Codex to choose defaults.
 

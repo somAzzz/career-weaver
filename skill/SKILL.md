@@ -63,7 +63,9 @@ Use a deterministic question funnel when the user's request is underspecified. A
    - Default to the JD language when obvious.
    - If the user speaks Chinese but the JD is German, interact in Chinese and generate the resume in German.
 8. **Template Choice**: Ask before rendering any resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults.
-   - List templates with `python scripts/setup_workflow.py list-templates`.
+   - List templates with `python scripts/setup_workflow.py list-templates` immediately before asking.
+   - Build the template candidates from that command output every time; do not use a hard-coded candidate list.
+   - Newly added templates under `assets/templates/{template_name}/{template_name}.txt` must appear in the next template-choice candidates.
    - Render with a template name such as `--template luxsleek`.
    - Do not silently use the default `engineer` template.
 9. **Version Choice**: If the user asks for multiple versions, confirm the exact version matrix before generating.

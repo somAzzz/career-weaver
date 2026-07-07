@@ -1,0 +1,208 @@
+% Career Weaver template adapted from the Business Insider / Marissa Mayer
+% AltaCV example by LianTze Lim. Original Overleaf template and AltaCV are
+% distributed under the LaTeX Project Public License 1.3c.
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{noto}
+\usepackage[left=1.25cm,right=1.25cm,top=1.35cm,bottom=1.35cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+\definecolor{BusinessPurple}{HTML}{3E0097}
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+\definecolor{TagGrey}{HTML}{F1EEF7}
+
+\hypersetup{colorlinks=true,urlcolor=BusinessPurple}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35ex}
+\setlength{\columnsep}{1cm}
+\setlist[itemize]{leftmargin=4mm,itemsep=0.2ex,topsep=0.25ex,parsep=0pt}
+
+\newcommand{\cvsection}[1]{%
+  \vspace{1.1ex}%
+  {\Large\bfseries\color{BusinessPurple}\MakeUppercase{#1}}\par
+  {\color{BusinessPurple}\rule{\linewidth}{0.7pt}}\vspace{0.4ex}\par
+}
+\newcommand{\cvevent}[3]{%
+  {\large\bfseries\color{SlateGrey}#1}\par
+  {\bfseries\color{BusinessPurple}#2}\hfill{\small #3}\par
+}
+\newcommand{\cvtag}[1]{%
+  \begingroup
+  \setlength{\fboxsep}{3pt}%
+  \colorbox{TagGrey}{\strut\small\color{SlateGrey}#1}%
+  \endgroup
+}
+\newcommand{\divider}{\vspace{0.45ex}{\color{LightGrey!35}\rule{\linewidth}{0.5pt}}\vspace{0.45ex}}
+\newcommand{\contactsep}{\hspace{1.15em}}
+
+\begin{document}
+
+\begin{minipage}[t]{0.72\textwidth}
+{\Huge\bfseries\color{SlateGrey}\VAR{name | latex_escape}}\par
+\vspace{0.35ex}
+{\Large\color{BusinessPurple}\VAR{role | latex_escape}}\par
+\vspace{1.0ex}
+{\small
+\href{mailto:\VAR{contact.email}}{\VAR{contact.email | latex_escape}}
+\BLOCK{if contact.phone}
+\contactsep \VAR{contact.phone | latex_escape}
+\BLOCK{endif}
+\contactsep \VAR{contact.display_location | default(contact.location) | latex_escape}
+\BLOCK{if contact.linkedin}
+\contactsep \href{\VAR{contact.linkedin}}{\VAR{contact.linkedin | display_url | latex_escape}}
+\BLOCK{endif}
+\BLOCK{if contact.github}
+\contactsep \href{\VAR{contact.github}}{\VAR{contact.github | display_url | latex_escape}}
+\BLOCK{endif}
+}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.20\textwidth}
+\raggedleft
+\BLOCK{if photo and photo.filename}
+\includegraphics[width=2.5cm,height=2.5cm,keepaspectratio]{\VAR{photo.filename}}
+\BLOCK{endif}
+\end{minipage}
+
+\vspace{1ex}
+{\color{BusinessPurple}\rule{\linewidth}{1.1pt}}
+\vspace{0.4ex}
+
+\begin{multicols}{2}
+
+\BLOCK{if experience}
+\cvsection{\VAR{labels.experience | default('Experience') | latex_escape}}
+\BLOCK{for exp in experience}
+\cvevent{\VAR{exp.role | latex_escape}}{\VAR{exp.company | latex_escape}}{\VAR{exp.date | latex_escape}}
+\BLOCK{if exp.description}
+{\small\itshape \VAR{exp.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if exp.bullets}
+\begin{itemize}
+\BLOCK{for bullet in exp.bullets}
+\item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+\end{itemize}
+\BLOCK{endif}
+\BLOCK{if exp.tags}
+\smallskip
+\BLOCK{for tag in exp.tags}
+\cvtag{\VAR{tag | latex_escape}}\ 
+\BLOCK{endfor}
+\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if projects}
+\cvsection{\VAR{labels.projects | default('Projects') | latex_escape}}
+\BLOCK{for project in projects}
+\cvevent{\VAR{project.title | latex_escape}}{\VAR{project.company | latex_escape}}{\VAR{project.date | latex_escape}}
+\BLOCK{if project.description}
+{\small\itshape \VAR{project.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if project.bullets}
+\begin{itemize}
+\BLOCK{for bullet in project.bullets}
+\item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+\end{itemize}
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if research}
+\cvsection{\VAR{labels.research | default('Research Projects') | latex_escape}}
+\BLOCK{for research_item in research}
+\cvevent{\VAR{research_item.title | latex_escape}}{\VAR{research_item.company | latex_escape}}{\VAR{research_item.date | latex_escape}}
+\BLOCK{if research_item.description}
+{\small\itshape \VAR{research_item.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if research_item.bullets}
+\begin{itemize}
+\BLOCK{for bullet in research_item.bullets}
+\item \VAR{bullet | latex_escape}
+\BLOCK{endfor}
+\end{itemize}
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\columnbreak
+
+\cvsection{\VAR{labels.summary | default('Profile') | latex_escape}}
+\VAR{summary | latex_escape}\par
+
+\BLOCK{if skills}
+\cvsection{\VAR{labels.skills | default('Strengths') | latex_escape}}
+\BLOCK{for category, items in skills.items()}
+{\bfseries\color{SlateGrey}\VAR{category | latex_escape}}\par
+\smallskip
+\BLOCK{for item in items}
+\cvtag{\VAR{item | latex_escape}}\ 
+\BLOCK{endfor}
+\par\smallskip
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if languages}
+\cvsection{\VAR{labels.languages | default('Languages') | latex_escape}}
+\BLOCK{for lang in languages}
+\textbf{\VAR{lang.name | latex_escape}}\hfill \VAR{lang.level | latex_escape}\par
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if certifications}
+\cvsection{\VAR{labels.certifications | default('Certifications') | latex_escape}}
+\BLOCK{for cert in certifications}
+\textbf{\VAR{cert.name | latex_escape}}\par
+\VAR{cert.issuer | latex_escape}\BLOCK{if cert.date} \hfill \VAR{cert.date | latex_escape}\BLOCK{endif}\par
+\BLOCK{if cert.description}
+{\small \VAR{cert.description | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if education}
+\cvsection{\VAR{labels.education | default('Education') | latex_escape}}
+\BLOCK{for edu in education}
+\cvevent{\VAR{edu.degree | latex_escape}\BLOCK{if edu.major} in \VAR{edu.major | latex_escape}\BLOCK{endif}}{\VAR{edu.school | latex_escape}}{\VAR{edu.date | latex_escape}}
+\BLOCK{if edu.thesis}
+{\small\textbf{Thesis:} \VAR{edu.thesis | latex_escape}}\par
+\BLOCK{endif}
+\BLOCK{if not loop.last}
+\divider
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{endif}
+
+\BLOCK{if hobbies}
+\cvsection{\VAR{labels.hobbies | default('Interests') | latex_escape}}
+\VAR{hobbies | latex_escape}
+\BLOCK{endif}
+
+\end{multicols}
+\end{document}
