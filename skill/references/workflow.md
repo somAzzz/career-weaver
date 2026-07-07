@@ -117,16 +117,24 @@ Ask before rendering any resume PDF unless the user already specified a template
 python scripts/setup_workflow.py list-templates
 ```
 
-Then ask:
+Build the user-facing candidates from the command output every time. Do not use a hard-coded candidate list from this document or memory. Any template added through `scripts/setup_workflow.py add-template` or placed under `assets/templates/{template_name}/{template_name}.txt` must appear in the next template-choice question.
+
+When asking the user, preserve the command output order and include all matching templates:
+
+- For a no-photo render, include all templates, but mark `[photo]` templates as "photo-capable, can also render without a photo" when helpful.
+- For a photo render, include only templates marked `[photo]` by `list-templates`, plus any custom template that clearly renders `photo.filename`.
+- For "generate both photo and no-photo versions", include both candidate sets and ask for the exact version matrix in Step 9.
+
+Ask with the dynamic candidates:
 
 ```text
 Which resume template should I use?
-1. engineer
-2. engineer_with_photo
-3. luxsleek
+1. {template_from_list_templates}
+2. {template_from_list_templates}
+3. {template_from_list_templates}
 ```
 
-If `list-templates` shows different templates, use that list instead. Do not silently use the default `engineer` template.
+Do not silently use the default `engineer` template. If the user has just added a new template, rerun `list-templates` before asking so the new template is included in the candidates.
 
 ### Step 9: Version Matrix
 
@@ -195,7 +203,7 @@ For pasted JD text, write the text to stdin or a temporary text file, then run t
 python scripts/render_resume.py --output output/{person}/jobs/{job}
 ```
 
-Use `--template engineer_with_photo` or `--template luxsleek` when `photo.filename` is present and the user wants a photo version.
+Use the template chosen by the user. When `photo.filename` is present and the user wants a photo version, render with a template from the latest `list-templates` output that is marked `[photo]`, such as `engineer_with_photo`, `luxsleek`, `businessinsider`, or a custom photo-capable template.
 
 ### "Use this photo"
 

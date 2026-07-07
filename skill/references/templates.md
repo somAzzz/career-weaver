@@ -47,6 +47,8 @@ python scripts/setup_workflow.py list-templates
 
 Show the template names to the user and ask which one they prefer before rendering a resume PDF unless the user already specified a template or explicitly asked Codex to choose defaults. Templates marked `[photo]` support `photo.filename`; if the user selects one, ask the mandatory photo question before rendering.
 
+When generating a resume, always rerun `list-templates` immediately before asking the template-choice question. Build the candidate list from that output, not from a static list in docs or memory. A newly added template must be included in the next template-choice candidates.
+
 ## Choose A Template
 
 The renderer accepts either a template name or a path:
